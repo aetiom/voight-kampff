@@ -4,23 +4,34 @@ PHP captcha generator
 ## Usage
 ### Create captcha
 ```php
-$param = array(
-    'imageCount'   => 7,
-    'requestCount' => 2,
-    'cbPrefix'     => 'html_checkbox_id_prefix',
-    'defaultLang'  => 'default_lang_tag',
-    'security'     => array(
-        'maxAttempts' => 3,
-        'timeoutTime' => 60,
-        'inactivTime' => 600
+$pool = array(
+    array(
+        'idStr' => '0120',
+        'lang'   => array(
+            'en' => 'table',
+            'fr' => 'table'
+        )
     ),
-    'frontend'      => array(),
-    'directive_lib' => array(),
-    'custom_errors' => array()
+    array(
+        'idStr' => '2501',
+        'lang'   => array(
+            'en' => 'glass',
+            'fr' => 'verre'
+        )
+    ),
+    
+    ...
+    
+    array(
+        'idStr' => '3241',
+        'lang'   => array(
+            'en' => 'book',
+            'fr' => 'livre'
+        )
+    )
 );
 
-$captcha = new VoightKampff\Captcha($param);
-$captcha->create('captcha_identifier_in_string');
+$captcha = new VoightKampff\Captcha('captcha_identifier_in_string', $pool);
 ```
 
 
@@ -31,7 +42,7 @@ for ($i = 0; $i < $param['imageCount']; $i++) {
 }
 
 $answers = \VoightKampff\Captcha::obtainPostedImages($cbId);
-$captcha->verify('captcha_identifier_in_string', $answers);
+$captcha->verify($answers);
 ```
 
 ### Display captcha
@@ -44,21 +55,6 @@ if ($captcha->getError() !== null) {
     $error = $captcha->getError()->getMessage($lang);
 }
 
-$displayOptions = array(
-    'frontend'  => array(
-      'options' => array(),
-      'colors'  => array(
-          'background' => 'whitesmoke',
-          'selection'  => 'cornflowerblue',
-          'error'      => 'orangered'
-      )
-    ),
-    'cbPrefix'  => 'html_checkbox_id_prefix',
-    'cssEnable' => true,
-    'jsEnable'  => true,
-    'debug'     => false
-)
-
-$display = new \VoightKampff\Display($images, $displayOptions);
+$display = new \VoightKampff\Display($images);
 $htmlCode = $display->getHtmlCode($directive, $error);
 ```
