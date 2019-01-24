@@ -1,2 +1,2 @@
 # voight-kampff
-Captcha generator
+PHP captcha generator
