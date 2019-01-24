@@ -20,7 +20,7 @@ $param = array(
 );
 
 $captcha = new VoightKampff\Captcha($param);
-$captcha->create('contact-form');
+$captcha->create('captcha_identifier_in_string');
 ```
 
 
@@ -31,7 +31,7 @@ for ($i = 0; $i < $param['imageCount']; $i++) {
 }
 
 $answers = \VoightKampff\Captcha::obtainPostedImages($cbId);
-$captcha->verify('contact-form', $answers);
+$captcha->verify('captcha_identifier_in_string', $answers);
 ```
 
 ### Display captcha
