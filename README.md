@@ -2,7 +2,7 @@
 PHP captcha generator
 
 ## Usage
-###Create captcha
+### Create captcha
 ```
 $param = array(
     'imageCount'   => 7,
@@ -24,7 +24,7 @@ $captcha->create('contact-form');
 ```
 
 
-###Verify captcha
+### Verify captcha
 ```
 for ($i = 0; $i < $symbolsCount; $i++) {
     $cb_id[] = $this->captchaOpts->getValue('cbPrefix').$i;
@@ -34,7 +34,7 @@ $answers = \VoightKampff\Captcha::obtainPostedImages($cb_id);
 $captcha->verify('contact-form', $answers);
 ```
 
-###Display captcha
+### Display captcha
 ```
 $symbols = $this->captcha->getImages();
 $directive = $captcha->getDirective($lang);
