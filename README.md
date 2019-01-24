@@ -27,10 +27,10 @@ $captcha->create('contact-form');
 ### Verify captcha
 ```php
 for ($i = 0; $i < $param['imageCount']; $i++) {
-    $cb_id[] = $param['cbPrefix'].$i;
+    $cbId[] = $param['cbPrefix'].$i;
 }
 
-$answers = \VoightKampff\Captcha::obtainPostedImages($cb_id);
+$answers = \VoightKampff\Captcha::obtainPostedImages($cbId);
 $captcha->verify('contact-form', $answers);
 ```
 
