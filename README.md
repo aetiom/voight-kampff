@@ -36,7 +36,7 @@ $captcha->verify('contact-form', $answers);
 
 ### Display captcha
 ```php
-$symbols = $captcha->getImages();
+$images = $captcha->getImages();
 $directive = $captcha->getDirective($lang);
 $error = '';
 
@@ -59,6 +59,6 @@ $displayOptions = array(
     'debug'     => false
 )
 
-$display = new \VoightKampff\Display($symbols, $displayOptions);
+$display = new \VoightKampff\Display($images, $displayOptions);
 $htmlCode = $display->getHtmlCode($directive, $error);
 ```
