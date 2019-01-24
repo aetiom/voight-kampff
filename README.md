@@ -1,8 +1,9 @@
 # voight-kampff
 PHP captcha generator
 
-# Usage
-__Create captcha__
+## Usage
+###Create captcha###
+```
 $param = array(
     'imageCount'   => 7,
     'requestCount' => 2,
@@ -20,19 +21,21 @@ $param = array(
 
 $captcha = new VoightKampff\Captcha($param);
 $captcha->create('contact-form');
+```
 
 
-
-__Verify captcha__
+###Verify captcha###
+```
 for ($i = 0; $i < $symbolsCount; $i++) {
     $cb_id[] = $this->captchaOpts->getValue('cbPrefix').$i;
 }
 
 $answers = \VoightKampff\Captcha::obtainPostedImages($cb_id);
 $captcha->verify('contact-form', $answers);
+```
 
-
-__Display captcha__
+###Display captcha###
+```
 $symbols = $this->captcha->getImages();
 $directive = $captcha->getDirective($lang);
 $error = '';
@@ -58,3 +61,4 @@ $displayOptions = array(
 
 $display = new \VoightKampff\Display($symbols, $displayOptions);
 $htmlCode = $display->getHtmlCode($directive, $error);
+```
