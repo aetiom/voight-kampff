@@ -1,0 +1,35 @@
+{
+	"name": "aetiom/voight-kampff",
+	"type": "library",
+	"description": "PHP captcha generator",
+	"keywords": ["captcha", "generator", "php", "frontend"],
+	"homepage": "https://github.com/aetiom/voight-kampff",
+	"time": "2019-01-24",
+	"license": "LGPL-3.0",
+	"authors":
+	[
+		{
+			"name": "Aetiom",
+			"homepage": "https://github.com/aetiom/",
+			"email": "aetiom@protonmail.com"
+		}
+	],
+	"support":
+	{
+		"email": "aetiom@protonmail.com",
+		"issues": "https://github.com/aetiom/voight-kampff/issues",
+		"source": "https://github.com/aetiom/voight-kampff"
+	},
+	"require":
+	{
+		"php": "^7.0.0"
+	},
+	"minimum-stability": "stable",
+	"autoload":
+	{
+		"psr-4":
+		{
+			"VoightKampff\\": "src/"
+		}
+	}
+}
