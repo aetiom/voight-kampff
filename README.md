@@ -26,8 +26,8 @@ $captcha->create('contact-form');
 
 ### Verify captcha
 ```php
-for ($i = 0; $i < $symbolsCount; $i++) {
-    $cb_id[] = $this->captchaOpts->getValue('cbPrefix').$i;
+for ($i = 0; $i < $param['imageCount']; $i++) {
+    $cb_id[] = $param['cbPrefix'].$i;
 }
 
 $answers = \VoightKampff\Captcha::obtainPostedImages($cb_id);
@@ -36,11 +36,11 @@ $captcha->verify('contact-form', $answers);
 
 ### Display captcha
 ```php
-$symbols = $this->captcha->getImages();
+$symbols = $captcha->getImages();
 $directive = $captcha->getDirective($lang);
 $error = '';
 
-if ($this->captcha->getError() !== null) {
+if ($captcha->getError() !== null) {
     $error = $captcha->getError()->getMessage($lang);
 }
 
