@@ -75,7 +75,7 @@ class Security {
     {
         $this->opts = $options;
         
-        $this->session = new \aetiom\Go4\Session('styx-captcha');
+        $this->session = new \aetiom\Go4\Session('voight-kampff');
         $this->session->insert(array('attempts' => 0, 'lastAttempt' => 0, 'timeout' => 0));
     }
     
