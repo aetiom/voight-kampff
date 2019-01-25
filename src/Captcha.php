@@ -26,7 +26,6 @@ class Captcha {
      */
     protected $session = null;
     
-    
     /**
      * @var \aetiom\Go4\Collection $directiveCol : captcha directive collection
      */
@@ -41,74 +40,6 @@ class Captcha {
      * @var \aetiom\Go4\Container $error : captcha error container
      */
     protected $error = null;
-    
-    
-    
-    /**
-     * @var array $defaultOpts : default captcha options
-     */
-    private $defaultOpts = array(
-        'imageCount'   => 7,
-        'requestCount' => 2,
-        'cbPrefix'     => 'sc-cb',
-        'defaultLang'  => '',
-        'security'     => array(
-            'maxAttempts' => 3,
-            'timeoutTime' => 60,
-            'inactivTime' => 600
-        ),
-        'frontend'      => array(),
-        'directive_lib' => array(),
-        'custom_errors' => array()
-    );
-    
-    /**
-     * @var array $defaultDir : default captcha directive collection
-     */
-    private $defaultDir = array(
-        'start'      => 'Select pictures ',
-        'linkSimple' => ' and ',
-        'linkMulti'  => ', ',
-        'end'        => '.',
-        'keywordIn'  => '<strong>',
-        'keywordOut' => '</strong>',
-    );
-    
-    /**
-     * @var array $defaultErr : default captcha error collection
-     */
-    private $defaultErr = array(
-        'emptyAnswers' => 'Please, select images.',
-        'wrongAnswers' => 'Wrong answers.',
-        'timeout'      => 'Too much wrong answers, please try again in %TIME% second(s).',
-    );
-    
-    
-    
-    /**
-     * Get posted images from HTML form
-     * 
-     * @param array $cb_id : checkbox id list
-     * @return array : posted images
-     */
-    static public function obtainPostedImages(array $cb_id = array())
-    {
-        $key_list = array();
-        
-        foreach ($cb_id as $id) {
-            $key_list[$id] = 'integer';
-        }
-        
-        $rawPost = \BFW\Helpers\Http::obtainManyPostKeys($cb_id, false);
-        
-        foreach ($rawPost as $key => $post) {
-            if ($post === null) {
-                unset($rawPost[$key]);
-            }
-        }
-        
-        return $rawPost;
-    }
     
     
     
@@ -153,45 +84,27 @@ class Captcha {
     
     
     /**
-    * Constructor
-    */
-    public function __construct($param = array()) {
-        
-        $this->options = array_merge($this->defaultOpts, $param);
-        
-        $this->directiveCol = new \aetiom\Go4\Collection(
-                array_merge($this->defaultDir, $this->options['directiveCollection']), 
-                $this->options['defaultLang']);
-        
-        $this->errorCol = new \aetiom\Go4\Collection(
-                array_merge($this->defaultErr, $this->options['errorCollection']), 
-                $this->options['defaultLang']);
-        
-        // set default lang if it's not already set
-        if (empty($this->options['defaultLang'])) {
-            $this->options['defaultLang'] = key($this->directive_lib);
-        }
-        
-        $this->security = new Security($this->options);
-    }
-    
-    
-    
-    /**
-     * Create captcha
+     * Constructor : create new captcha
+     * 
+     * @param string $id    : captcha identifier
+     * @param array  $param : optional parameters
      */
-    public function create($id) {
+    public function __construct($id, $param = array()) 
+    {
+        $this->initiate($param);
+        
+        $this->collection = new Collection($id, $this->options);
+        $this->security = new Security($this->options['security']);
         
         if ($this->security->get_timeout_status()) {
             $this->error = $this->errorCol->createContainer('timeout', 
-                    array('%TIME%' => $this->security->get_timeout_remaining()));
-            
+                array('%TIME%' => $this->security->get_timeout_remaining()));
+
             $this->collection->clear();
-            return;
         }
-        
-        $this->collection = new Collection($id, $this->main_opt);
     }
+    
+    
     
     /**
      * Verify captcha user answers
@@ -199,8 +112,8 @@ class Captcha {
      * @param array $userAnswers : user answers to check and certifiates 
      * @return boolean true in case of success, false otherwise
      */
-    public function verify($userAnswers) {
-        
+    public function verify($userAnswers) 
+    {
         $answerList = $this->collection->getAnswers();
         
         if (empty($userAnswers)) {
@@ -220,6 +133,25 @@ class Captcha {
         
         $this->error = $this->errorCol->createContainer('wrongAnswers');
         return false;
+    }
+    
+    
+    
+    /**
+     * Initiate options and collections
+     * @param array $param : optional parameters
+     */
+    private function initiate($param)
+    {
+        $this->options = VoightKampff::mergeWithDefaultOptions($param);
+        
+        $this->directiveCol = new \aetiom\Go4\Collection(
+                $this->options['directiveCollection'], 
+                $this->options['defaultLang']);
+        
+        $this->errorCol = new \aetiom\Go4\Collection(
+                $this->options['errorCollection'], 
+                $this->options['defaultLang']);
     }
     
     /**

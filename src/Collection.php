@@ -151,7 +151,7 @@ class Collection {
             if (!isset($this->images[$rand_key]['lang'][$defaultLang]) 
                     || empty($this->images[$rand_key]['lang'][$defaultLang])) {
                 throw new \Exception('default language ['.$defaultLang.
-                        '] is not set for pool entry '.$rand_key.' ('.$this->images['id_str'].')');
+                        '] is not set for pool entry '.$rand_key.' ('.$this->images['idStr'].')');
             }
             
             // store captcha directives and answers into session
@@ -183,9 +183,9 @@ class Collection {
         }
         
         else {
-            $pool = $this->initiatePool($param['pool']);
+            $initPool = $this->initiatePool($param['pool']);
             
-            $this->selectImages($pool, $param['imageCount']);
+            $this->selectImages($initPool, $param['imageCount']);
             $this->selectKeyWords($param['defaultLang'], $param['requestCount']);
             
             // remove 'lang' data from images selection for security reasons
