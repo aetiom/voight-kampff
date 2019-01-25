@@ -74,9 +74,9 @@ abstract class Abstr {
     public function createCss()
     {
         if ($this->debug === true) {
-            $css = file_get_contents(dirname(__DIR__).'/Assets/captcha.css');
+            $css = file_get_contents(__DIR__.'/Assets/captcha.css');
         } else {
-            $css = file_get_contents(dirname(__DIR__).'/Assets/captcha.min.css');
+            $css = file_get_contents(__DIR__.'/Assets/captcha.min.css');
         }
         
         $colors = $this->options['colors'];
@@ -97,10 +97,10 @@ abstract class Abstr {
     public function createJs()
     {
         if ($this->debug === true) {
-            return file_get_contents(dirname(__DIR__).'/Assets/captcha.js');
+            return file_get_contents(__DIR__.'/Assets/captcha.js');
         }
         
-        return file_get_contents(dirname(__DIR__).'/Assets/captcha.min.js');
+        return file_get_contents(__DIR__.'/Assets/captcha.min.js');
     }
     
     

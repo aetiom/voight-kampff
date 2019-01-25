@@ -64,7 +64,7 @@ class Fontawesome extends Abstr {
         
         $css = parent::create_css_code();
         foreach ($this->collection as $col) {
-            $css .= $prefix.'.sc'.$col['key'].':before {content:"'.$col['id_str'].'";}';
+            $css .= $prefix.'.sc'.$col['key'].':before {content:"'.$col['idStr'].'";}';
         }
         
         return $css;

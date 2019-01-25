@@ -40,7 +40,7 @@ class Images extends Abstr {
         $css .= 'div.sc-form label .sc-img.selected { border: 2px solid '.$this->colors['selection'].'; }';
         
         foreach ($this->collection as $col) {
-            $css .= $prefix.'.sc'.$col['key'].':after {content:" url('.$col['id_str'].')";}';
+            $css .= $prefix.'.sc'.$col['key'].':after {content:" url('.$col['idStr'].')";}';
         }
         
         return $css;
