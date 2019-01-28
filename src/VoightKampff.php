@@ -60,23 +60,6 @@ class VoightKampff {
     
     
     /**
-     * @var array $defaultOpts : default captcha options
-     */
-    private $defaultOpts = array(
-        'imageCount'   => 7,
-        'requestCount' => 2,
-        'defaultLang'  => '',
-        'debug'        => false,
-        'security'     => array(
-            'maxAttempts' => 3,
-            'timeoutTime' => 60,
-            'inactivTime' => 600
-        )
-    );
-    
-    
-    
-    /**
      * Set current language
      * @param string $lang : lang
      */
