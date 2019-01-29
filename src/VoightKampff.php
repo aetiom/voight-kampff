@@ -87,6 +87,7 @@ class VoightKampff {
     }
     
     
+    
     /**
      * Get posted images from HTML form
      * 

@@ -32,7 +32,7 @@ class Collection {
     protected $keyWords = array();
     
     /**
-     * @var \aetiom\Go4\Session $session : captcha session
+     * @var \aetiom\PhpExt\Session $session : captcha session
      */
     protected $session = null;
     
@@ -76,7 +76,7 @@ class Collection {
     public function __construct($id, $param)
     {
         $this->id = $id;
-        $this->session = new \aetiom\Go4\Session('styx-captcha');
+        $this->session = new \aetiom\PhpExt\Session('styx-captcha');
         
         $this->setCollection($param);
         
@@ -111,12 +111,13 @@ class Collection {
         
         $img = 0;
         while ($img < $count) {
-            $rand_key = mt_rand(0, 19);
+            $randKey = mt_rand(0, 19);
 
-            if (array_key_exists($rand_key, $pool) && !array_key_exists($rand_key, $this->images)) {
-                $this->images[$img] = $pool[$rand_key];
+            if (array_key_exists($randKey, $pool) 
+                    && !array_key_exists($randKey, $this->images)) {
+                $this->images[$img] = $pool[$randKey];
                 $this->images[$img]['class'] = '.c'.$this->images[$img]['key'];
-                unset($pool[$rand_key]);
+                unset($pool[$randKey]);
 
                 $img++;
             }
@@ -134,29 +135,33 @@ class Collection {
     protected function selectKeyWords($defaultLang, $count) {
         
         if (empty($this->images)) {
-            throw new \Exception('images collection is empty, cannot select requests');
+            throw new \Exception('image collection is empty,'.
+                    ' cannot select key words');
         }
         
         $imageCount = count($this->images);
         $quest = 0;
         
         while ($quest < $count) {
-            $rand_key = mt_rand(0, $imageCount - 1);
+            $rand = mt_rand(0, $imageCount - 1);
 
-            if (array_search($this->images[$rand_key]['lang'], $this->keyWords) !== false || 
-                    array_search($this->images[$rand_key]['key'], $this->answers) !== false) {
+            $sK = array_search($this->images[$rand]['lang'], $this->keyWords);
+            $sA = array_search($this->images[$rand]['key'], $this->answers);
+            
+            if ($sK !== false || $sA !== false) {
                 continue;
             }
             
-            if (!isset($this->images[$rand_key]['lang'][$defaultLang]) 
-                    || empty($this->images[$rand_key]['lang'][$defaultLang])) {
+            if (!isset($this->images[$rand]['lang'][$defaultLang]) 
+                    || empty($this->images[$rand]['lang'][$defaultLang])) {
                 throw new \Exception('default language ['.$defaultLang.
-                        '] is not set for pool entry '.$rand_key.' ('.$this->images['idStr'].')');
+                        '] is not set for pool entry '.$rand.
+                        ' ('.$this->images['idStr'].')');
             }
             
             // store captcha directives and answers into session
-            $this->keyWords[] = $this->images[$rand_key]['lang'];
-            $this->answers[]  = $this->images[$rand_key]['key'];
+            $this->keyWords[] = $this->images[$rand]['lang'];
+            $this->answers[]  = $this->images[$rand]['key'];
 
             $quest++;
         }
@@ -175,11 +180,11 @@ class Collection {
      */
     private function setCollection($param)
     {
-        $current_col = $this->session->select($this->id)->fetch();
-        if (!empty($current_col)) {
-            $this->images   = $current_col['images'];
-            $this->keyWords = $current_col['keyWords'];
-            $this->answers  = $current_col['answers'];
+        $currentCol = $this->session->select($this->id)->fetch();
+        if (!empty($currentCol)) {
+            $this->images   = $currentCol['images'];
+            $this->keyWords = $currentCol['keyWords'];
+            $this->answers  = $currentCol['answers'];
         }
         
         else {

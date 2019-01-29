@@ -22,22 +22,22 @@ class Captcha {
     protected $collection = null;
     
     /**
-     * @var \aetiom\Go4\Session $session : captcha session
+     * @var \aetiom\PhpExt\Session $session : captcha session
      */
     protected $session = null;
     
     /**
-     * @var \aetiom\Go4\Collection $directiveCol : captcha directive collection
+     * @var \aetiom\PhpExt\MultiLang\Collection $directiveCol : directive collection
      */
     protected $directiveCol = null;
     
     /**
-     * @var \aetiom\Go4\Collection $errorCol : captcha error collection
+     * @var \aetiom\PhpExt\MultiLang\Collection $errorCol : error collection
      */
     protected $errorCol = null;
     
     /**
-     * @var \aetiom\Go4\Container $error : captcha error container
+     * @var \aetiom\PhpExt\MultiLang\Container $error : error container
      */
     protected $error = null;
     
@@ -74,7 +74,7 @@ class Captcha {
     
     /**
      * Get error
-     * @return \aetiom\Go4\Container : captcha error container
+     * @return \aetiom\PhpExt\MultiLang\Container : captcha error container
      */
     public function getError()
     {
@@ -145,11 +145,11 @@ class Captcha {
     {
         $this->options = VoightKampff::mergeWithDefaultOptions($param);
         
-        $this->directiveCol = new \aetiom\Go4\Collection(
+        $this->directiveCol = new \aetiom\PhpExt\MultiLang\Collection(
                 $this->options['directiveCollection'], 
                 $this->options['defaultLang']);
         
-        $this->errorCol = new \aetiom\Go4\Collection(
+        $this->errorCol = new \aetiom\PhpExt\MultiLang\Collection(
                 $this->options['errorCollection'], 
                 $this->options['defaultLang']);
     }

@@ -17,7 +17,7 @@ class Security {
     protected $opts;
     
     /**
-     * @var \aetiom\Go4\Session $session : captcha session
+     * @var \aetiom\PhpExt\Session $session : captcha session
      */
     protected $session;
     
@@ -75,8 +75,10 @@ class Security {
     {
         $this->opts = $options;
         
-        $this->session = new \aetiom\Go4\Session('voight-kampff');
-        $this->session->insert(array('attempts' => 0, 'lastAttempt' => 0, 'timeout' => 0));
+        $this->session = new \aetiom\PhpExt\Session('voight-kampff');
+        $this->session->insert(
+                array('attempts' => 0, 'lastAttempt' => 0, 'timeout' => 0)
+        );
     }
     
     
