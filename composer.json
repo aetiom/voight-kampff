@@ -2,7 +2,7 @@
 	"name": "aetiom/voight-kampff",
 	"type": "library",
 	"description": "PHP captcha generator",
-	"keywords": ["captcha", "generator", "php", "frontend"],
+	"keywords": ["captcha", "generator", "backend", "frontend", "php", "css", "js"],
 	"homepage": "https://github.com/aetiom/voight-kampff",
 	"time": "2019-01-24",
 	"license": "LGPL-3.0",
@@ -22,7 +22,8 @@
 	},
 	"require":
 	{
-		"php": "^7.0.0"
+		"php": "^7.0.0",
+    "aetiom/php-extended": "dev-dev"
 	},
 	"minimum-stability": "stable",
 	"autoload":
