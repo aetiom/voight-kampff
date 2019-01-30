@@ -129,12 +129,15 @@ class VoightKampff {
     
     /**
      * Constructor
-     * 
-     * @param array  $param : optional parameters
+     * @param array $param : optional parameters
      */
     public function __construct($param = array()) 
     {
-        $this->options = self::mergeWithDefaultOptions($param);
+        $this->options = $param;
+        if (!isset($param['nomerge']) || $param['nomerge'] === false) {
+            $this->options = self::mergeWithDefaultOptions($param);
+        }
+        
         $this->lang = $this->options['defaultLang'];
         
         if (!isset($this->options['pool']) || empty($this->options['pool'])) {
