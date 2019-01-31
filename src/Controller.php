@@ -1,5 +1,7 @@
 <?php
 
+namespace VoightKampff;
+
 /**
  * VoightKampff captcha manager
  *
@@ -7,7 +9,7 @@
  * @package VoightKampff
  * @version 1.0
  */
-class VoightKampff {
+class Controller {
     
     /**
      * @const integer ERR_FRONTEND_CLASS_MISSING :
