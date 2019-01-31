@@ -12,9 +12,9 @@ namespace VoightKampff\FrontEnd;
 class Fontawesome extends Abstr {
     
     /**
-     * @var array $fa5_styles : fontawesome 5 style (solid, regular, light) 
+     * @var array $styles : fontawesome 5 style (solid, regular, light) 
      */
-    private $fa5_styles = array(
+    private $styles = array(
         'solid'   => 'fas',
         'regular' => 'far',
         'light'   => 'fal'
@@ -30,23 +30,23 @@ class Fontawesome extends Abstr {
     {
         parent::setCollection($collection);
         
-        $fa5_options = $this->options['options'];
+        $fa5Opts = $this->options['options'];
         
-        if (!isset($fa5_options['fa5_style']) || empty($fa5_options['fa5_style'])) {
-            $fa5_options['fa5_style'] = 'fas';
+        if (!isset($fa5Opts['fa5Style']) || empty($fa5Opts['fa5Style'])) {
+            $fa5Opts['fa5Style'] = 'fas';
             
-        } elseif (array_key_exists($fa5_options['fa5_style'], $this->fa5_styles) !== false) {
-            $fa5_options['fa5_style'] = $this->fa5_styles[$fa5_options['fa5_style']];
+        } elseif (array_key_exists($fa5Opts['fa5Style'], $this->styles) !== false) {
+            $fa5Opts['fa5Style'] = $this->styles[$fa5Opts['fa5Style']];
         }
         
         foreach ($this->collection as $key => $select) {
-            $style_class = $fa5_options['fa5_style'];
+            $styleClass = $fa5Opts['fa5Style'];
             
-            if (isset($select['style_class']) && !empty($select['style_class'])) {
-                $style_class = $select['style_class'];
+            if (isset($select['styleClass']) && !empty($select['styleClass'])) {
+                $styleClass = $select['styleClass'];
             }
             
-            $this->collection[$key]['label'] = '<i class="vk-img '.$style_class.' vk'.$select['key'].'"></i>';
+            $this->collection[$key]['label'] = '<i class="vk-img '.$styleClass.' vk'.$select['key'].'"></i>';
         }
     }
     

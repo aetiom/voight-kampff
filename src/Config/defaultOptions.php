@@ -70,9 +70,9 @@ return [
         'options' => [
             
             /**
-             * @var string fa5_style : fontawesome 5
+             * @var string fa5Style : fontawesome 5
              */
-            'fa5_style' => 'regular',
+            'fa5Style' => 'regular',
         ],
         
         /**
