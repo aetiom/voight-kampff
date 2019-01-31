@@ -202,7 +202,7 @@ class Controller {
         
         $feClass = $this->options['frontend']['class'];
         if (strstr('\\', $feClass) === false) {
-            $feClass = 'FrontEnd\\'.$feClass;
+            $feClass = '\\VoightKampff\\FrontEnd\\'.$feClass;
         }
         
         if (!class_exists($feClass)) {
