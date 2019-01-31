@@ -44,6 +44,16 @@ class Captcha {
     
     
     /**
+     * Get captcha identifier
+     * @return string : captcha identifier
+     */
+    public function getId()
+    {
+        return $this->collection->getId();
+    }
+    
+    
+    /**
      * Get collection of images to display
      * @return array : image collection
      */

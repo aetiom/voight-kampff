@@ -39,6 +39,15 @@ class Collection {
     
     
     /**
+     * Get collection identifier
+     * @return string : collection identifier
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
      * Get captcha images
      * @return array list of images
      */
