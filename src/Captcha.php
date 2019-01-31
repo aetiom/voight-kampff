@@ -91,9 +91,17 @@ class Captcha {
      * @param string $id    : captcha identifier
      * @param array  $param : optional parameters
      */
-    public function __construct($id, $param = array()) 
+    public function __construct($id, $param) 
     {
-        $this->initiate($param);
+        $this->options = $param;
+        
+        $this->directiveCol = new \aetiom\PhpExt\MultiLang\Collection(
+                $this->options['directiveCollection'], 
+                $this->options['defaultLang']);
+        
+        $this->errorCol = new \aetiom\PhpExt\MultiLang\Collection(
+                $this->options['errorCollection'], 
+                $this->options['defaultLang']);
         
         $this->collection = new Collection($id, $this->options);
         $this->security = new Security($this->options['security']);
@@ -144,23 +152,6 @@ class Captcha {
     }
     
     
-    
-    /**
-     * Initiate options and collections
-     * @param array $param : optional parameters
-     */
-    private function initiate($param)
-    {
-        $this->options = VoightKampff::mergeWithDefaultOptions($param);
-        
-        $this->directiveCol = new \aetiom\PhpExt\MultiLang\Collection(
-                $this->options['directiveCollection'], 
-                $this->options['defaultLang']);
-        
-        $this->errorCol = new \aetiom\PhpExt\MultiLang\Collection(
-                $this->options['errorCollection'], 
-                $this->options['defaultLang']);
-    }
     
     /**
      * Check user answers
