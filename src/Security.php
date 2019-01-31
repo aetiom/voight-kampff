@@ -12,9 +12,9 @@ namespace VoightKampff;
 class Security {
     
     /**
-     * @var array $opts : config options
+     * @var array $options : config options
      */
-    protected $opts;
+    protected $options;
     
     /**
      * @var \aetiom\PhpExt\Session $session : captcha session
@@ -108,9 +108,9 @@ class Security {
             $session_is_active = false;
         }
 
-        if ($this->session->fetch('attempts') >= $this->opts['maxAttempts']) {
+        if ($this->session->fetch('attempts') >= $this->options['maxAttempts']) {
             $this->session->select('timeout')
-                    ->update(time() + intval($this->opts['timeoutTime']));
+                    ->update(time() + intval($this->options['timeoutTime']));
             $this->session->select('attempts')->update(0);
         }
         
