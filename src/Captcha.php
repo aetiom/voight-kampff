@@ -59,11 +59,7 @@ class Captcha {
      */
     public function getImages()
     {
-        if ($this->collection !== null) {
-            return $this->collection->getImages();
-        }
-        
-        return array();
+        return $this->collection->getImages();
     }
     
     /**
@@ -75,10 +71,6 @@ class Captcha {
      */
     public function getDirective($lang = '')
     {
-        if ($this->collection == null) {
-            return '';
-        }
-        
         return $this->formatDirective($lang);
     }
     
