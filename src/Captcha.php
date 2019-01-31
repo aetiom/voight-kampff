@@ -212,7 +212,7 @@ class Captcha {
             }
 
             
-            $dirStr .= $kwIn->getMessage($lang).$q->getMessage($lang).$kwOut->getMessage($lang);
+            $dirStr .= $kwIn->getMessage($lang).$q[$lang].$kwOut->getMessage($lang);
             
         }
 
