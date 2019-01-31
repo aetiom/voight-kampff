@@ -120,13 +120,13 @@ abstract class Abstr {
         }
         
         if (isset($content['error']) && !empty($content['error'])) {
-            $html_code .='<div class="sc-form has-error"><p class="sc-error">'.nl2br($content['error']).'</p>';
+            $html_code .='<div class="vk-form has-error"><p class="vk-error">'.nl2br($content['error']).'</p>';
         } else {
-            $html_code .= '<div class="sc-form">';
+            $html_code .= '<div class="vk-form">';
         }
         
         if (isset($content['directive']) && !empty($content['directive'])) {
-            $html_code .= '<p class="sc-directive">'.nl2br($content['directive']).'</p>';
+            $html_code .= '<p class="vk-directive">'.nl2br($content['directive']).'</p>';
         }
         
         $html_code .= $this->createFormInputs().'</div>';
@@ -153,7 +153,7 @@ abstract class Abstr {
             
             // initiate select content with default value if its not initiated yet
             if (!isset($select['label']) || empty($select['label'])) {
-                $select['label'] = '<span class="sc-img c'.$select['key'].'"></span>';
+                $select['label'] = '<span class="vk-img vk'.$select['key'].'"></span>';
             }
             
             $inputs .= '<input class="" type="checkbox" id="'.$this->cbPrefix.$count

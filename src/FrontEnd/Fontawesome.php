@@ -46,7 +46,7 @@ class Fontawesome extends Abstr {
                 $style_class = $select['style_class'];
             }
             
-            $this->collection[$key]['label'] = '<i class="sc-img '.$style_class.' sc'.$select['key'].'"></i>';
+            $this->collection[$key]['label'] = '<i class="vk-img '.$style_class.' vk'.$select['key'].'"></i>';
         }
     }
     
@@ -63,7 +63,7 @@ class Fontawesome extends Abstr {
         
         $css = parent::createCss();
         foreach ($this->collection as $col) {
-            $css .= $prefix.'.sc'.$col['key'].':before {content:"'.$col['idStr'].'";}';
+            $css .= $prefix.'.vk'.$col['key'].':before {content:"'.$col['idStr'].'";}';
         }
         
         return $css;

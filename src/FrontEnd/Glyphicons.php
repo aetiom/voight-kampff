@@ -20,7 +20,7 @@ class Glyphicons  extends Abstr {
         parent::setCollection($collection);
         
         foreach ($this->collection as $key => $select) {
-            $this->collection[$key]['label'] = '<span class="sc-img glyphicon sc'.$select['key'].'"></span>';
+            $this->collection[$key]['label'] = '<span class="vk-img glyphicon vk'.$select['key'].'"></span>';
         }
     }
     
@@ -37,7 +37,7 @@ class Glyphicons  extends Abstr {
         
         $css = parent::createCss();
         foreach ($this->collection as $col) {
-            $css .= $prefix.'.sc'.$col['key'].':before {content:"'.$col['idStr'].'";}';
+            $css .= $prefix.'.vk'.$col['key'].':before {content:"'.$col['idStr'].'";}';
         }
         
         return $css;

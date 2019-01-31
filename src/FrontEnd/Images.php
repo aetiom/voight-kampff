@@ -20,7 +20,7 @@ class Images extends Abstr {
         parent::setCollection($collection);
         
         foreach ($this->collection as $key => $select) {
-            $this->collection[$key]['label'] = '<img class="sc-img sc'.$select['key'].'" src="'.$select['key'].'.jpg"/>';
+            $this->collection[$key]['label'] = '<img class="vk-img vk'.$select['key'].'" src="'.$select['key'].'.jpg"/>';
         }
     }
     
@@ -36,10 +36,10 @@ class Images extends Abstr {
         }
         
         $css = parent::createCss();
-        $css .= 'div.sc-form label .sc-img.selected { border: 2px solid '.$this->colors['selection'].'; }';
+        $css .= 'div.vk-form label .vk-img.selected { border: 2px solid '.$this->colors['selection'].'; }';
         
         foreach ($this->collection as $col) {
-            $css .= $prefix.'.sc'.$col['key'].':after {content:" url('.$col['idStr'].')";}';
+            $css .= $prefix.'.vk'.$col['key'].':after {content:" url('.$col['idStr'].')";}';
         }
         
         return $css;
