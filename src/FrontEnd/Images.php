@@ -13,12 +13,10 @@ class Images extends Abstr {
     
     /**
      * Constructor
-     * 
-     * @param array  $collection : symbols collection
-     * @param string $options    : options containing 'cb_prefix' and 'colors' keys
+     * @param string $options : options containing 'cb_prefix' and 'colors' keys
      */
-    public function __construct($collection, $options) {
-        parent::__construct($collection, $options);
+    public function __construct($options) {
+        parent::__construct($options);
         
         foreach ($this->collection as $key => $select) {
             $this->collection[$key]['label'] = '<img class="sc-img sc'.$select['key'].'" src="'.$select['key'].'.jpg"/>';
