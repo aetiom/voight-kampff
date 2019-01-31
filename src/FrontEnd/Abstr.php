@@ -116,7 +116,7 @@ abstract class Abstr {
         $html_code = '';
         
         if ($cssEnable === true) {
-            $html_code .= '<style type="text/css">'.$this->create_css_code().'</style>';
+            $html_code .= '<style type="text/css">'.$this->createCss().'</style>';
         }
         
         if (isset($content['error']) && !empty($content['error'])) {
@@ -129,10 +129,10 @@ abstract class Abstr {
             $html_code .= '<p class="sc-directive">'.nl2br($content['directive']).'</p>';
         }
         
-        $html_code .= $this->create_form_inputs().'</div>';
+        $html_code .= $this->createFormInputs().'</div>';
         
         if ($jsEnable === true) {
-            $html_code .= '<script type="text/javascript">'.$this->create_js_code().'</script>';
+            $html_code .= '<script type="text/javascript">'.$this->createJs().'</script>';
         }
         
         return $html_code;
@@ -144,7 +144,7 @@ abstract class Abstr {
      * Create form inputs for HTML
      * @return string form inputs HTML code
      */
-    protected function create_form_inputs() 
+    protected function createFormInputs() 
     {
         $inputs = '';
         

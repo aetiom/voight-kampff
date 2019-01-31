@@ -29,14 +29,14 @@ class Images extends Abstr {
      * Create CSS code
      * @return string CSS code
      */
-    public function create_css_code()
+    public function createCss()
     {
         $prefix = '';
         if ($this->debug === true) {
             $prefix = "\n\n";
         }
         
-        $css = parent::create_css_code();
+        $css = parent::createCss();
         $css .= 'div.sc-form label .sc-img.selected { border: 2px solid '.$this->colors['selection'].'; }';
         
         foreach ($this->collection as $col) {
