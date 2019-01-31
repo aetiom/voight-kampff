@@ -139,7 +139,7 @@ class Controller {
      */
     public function createCaptcha(string $id = 'vk') 
     {
-        return new \VoightKampff\Captcha($id, $this->pool, $this->options);
+        return new \VoightKampff\Captcha($id, $this->options);
     }
     
     /**
