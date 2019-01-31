@@ -118,6 +118,12 @@ class Captcha {
     {
         $answerList = $this->collection->getAnswers();
         
+        if (!$this->security->isSessionActive()) {
+            $this->error = $this->errorCol->createContainer('inactive');
+            $this->collection->clear();
+            return false;
+        }
+        
         if (empty($userAnswers)) {
             $this->error = $this->errorCol->createContainer('emptyAnswers');
             return false;

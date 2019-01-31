@@ -171,6 +171,14 @@ return [
         'timeout' => [
             'en' => 'Too much wrong answers, please try again in %TIME% second(s).',
             'fr' => 'Trop de mauvaises réponses, réessayez dans %TIME% seconde(s).'
+        ],
+        
+        /**
+         * @var array inactive : error message when user get inactive
+         */
+        'inactive' => [
+            'en' => 'You were too long to answer, please try again.',
+            'fr' => 'Vous avez été trop long à répondre, veuillez réessayer.'
         ]
     ]
 ];
