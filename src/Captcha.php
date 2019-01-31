@@ -96,9 +96,9 @@ class Captcha {
         $this->collection = new Collection($id, $this->options);
         $this->security = new Security($this->options['security']);
         
-        if ($this->security->get_timeout_status()) {
+        if ($this->security->getTimeoutStatus()) {
             $this->error = $this->errorCol->createContainer('timeout', 
-                array('%TIME%' => $this->security->get_timeout_remaining()));
+                array('%TIME%' => $this->security->getTimeoutRemaining()));
 
             $this->collection->clear();
         }
@@ -127,7 +127,7 @@ class Captcha {
             return true;
         }
         
-        if (!$this->security->add_attempt()) {
+        if (!$this->security->addAttempt()) {
             $this->collection->clear();
         }
         
