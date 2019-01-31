@@ -23,11 +23,12 @@ class Fontawesome extends Abstr {
     
     
     /**
-     * Constructor
-     * @param string $options : options containing 'cb_prefix' and 'colors' keys
+     * Set symbols collection
+     * @param array $collection : symbols collection
      */
-    public function __construct($options) {
-        parent::__construct($options);
+    public function setCollection($collection)
+    {
+        parent::setCollection($collection);
         
         $fa5_options = $this->options['options'];
         

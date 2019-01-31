@@ -12,11 +12,12 @@ namespace VoightKampff\FrontEnd;
 class Glyphicons  extends Abstr {
     
     /**
-     * Constructor
-     * @param string $options    : options containing 'cb_prefix' and 'colors' keys
+     * Set symbols collection
+     * @param array $collection : symbols collection
      */
-    public function __construct($options) {
-        parent::__construct($options);
+    public function setCollection($collection)
+    {
+        parent::setCollection($collection);
         
         foreach ($this->collection as $key => $select) {
             $this->collection[$key]['label'] = '<span class="sc-img glyphicon sc'.$select['key'].'"></span>';
