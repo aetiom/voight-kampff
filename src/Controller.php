@@ -210,6 +210,9 @@ class Controller {
                     self::ERR_FRONTEND_CLASS_UNKNOWN);
         }
         
-        $this->frontend = new $feClass($this->options['frontend']);
+        $feOpts = $this->options['frontend'];
+        $feOpts['cbPrefix'] = $this->options['cbPrefix'];
+        
+        $this->frontend = new $feClass($feOpts);
     }
 }

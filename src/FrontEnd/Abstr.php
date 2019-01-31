@@ -58,7 +58,7 @@ abstract class Abstr {
                 'background' => 'whitesmoke',
                 'selection'  => 'cornflowerblue',
                 'error'      => 'orangered'
-            )), $options['frontend']);
+            )), $options);
         
         
         $this->cbPrefix = $options['cbPrefix'];        
