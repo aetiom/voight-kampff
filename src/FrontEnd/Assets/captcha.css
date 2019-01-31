@@ -1,4 +1,4 @@
-div.sc-form {
+div.vk-form {
   border-radius: 0.25rem;
   background-color: %BG_COLOR%;
   border: 1px solid #ccc;
@@ -7,33 +7,33 @@ div.sc-form {
   text-align: center;
 }
 
-div.sc-form.has-error {
+div.vk-form.has-error {
   border: 2px solid %ERR_COLOR%;
 }
 
-div.sc-form p {
+div.vk-form p {
   text-align: center;
   margin: 0.5rem;
 }
 
-div.sc-form p.sc-error {
+div.vk-form p.vk-error {
   color: orangered;
   margin: 1rem;
 }
 
-div.sc-form input[type="checkbox"] {
+div.vk-form input[type="checkbox"] {
   opacity: 0;
 }
 
-div.sc-form label {
+div.vk-form label {
   position: relative;
   left: -15px;
 }
 
-div.sc-form label .sc-img {
+div.vk-form label .vk-img {
   font-size: 1.6em;
 }
 
-div.sc-form label .sc-img.selected {
+div.vk-form label .vk-img.selected {
   color: %SELECT_COLOR%;
 }
