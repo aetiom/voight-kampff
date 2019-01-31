@@ -3,7 +3,7 @@
 namespace VoightKampff;
 
 /**
- * Captcha collection
+ * VoightKampff captcha collection
  *
  * @author Aetiom <aetiom@protonmail.com>
  * @package VoightKampff

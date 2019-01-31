@@ -1,7 +1,7 @@
 <?php
 
 /**
- * VoightKampff
+ * VoightKampff captcha manager
  *
  * @author Aetiom <aetiom@protonmail.com>
  * @package VoightKampff
