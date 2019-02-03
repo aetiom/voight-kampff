@@ -53,7 +53,7 @@ class Controller {
      */
     static public function obtainPostedImages($imageCount, $cbPrefix)
     {
-        $postedImages[] = array();
+        $postedImages = array();
 
         for ($i = 0; $i < $imageCount; $i++) {
             $key = $cbPrefix.$i;

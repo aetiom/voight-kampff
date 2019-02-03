@@ -32,7 +32,7 @@ return [
     /**
      * @var string cbPrefix : prefix used for/by checkbox elements (for id, name and label)
      */
-    'cbPrefix' => 'sc-cb',
+    'cbPrefix' => 'vk-cb',
     
     /**
      * @var security : security configuration (user max attemps and timeout system)

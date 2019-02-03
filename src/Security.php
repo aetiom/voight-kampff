@@ -58,7 +58,7 @@ class Security {
         $lastAttempt = $this->session->fetch('lastAttempt');
         
         if ($lastAttempt !== 0 && $lastAttempt 
-                + $this->opt['inactivTime'] < time()) {
+                + $this->options['inactivTime'] < time()) {
             return false;
         }
         
