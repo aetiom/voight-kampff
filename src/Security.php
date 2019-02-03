@@ -82,16 +82,20 @@ class Security {
     }
     
     
+    
     /**
-     * Reset session security data and unset actual collection
+     * Reset session security data
+     * @param string $param : security parameter to clear
      */
-    public function clear()
+    public function clear($param = null)
     {
-        $this->session->update(
+        if ($param === null) {
+            $this->session->update(
                 array('attempts' => 0, 'lastAttempt' => 0, 'timeout' => 0));
+        }
+        
+        $this->session->select($param)->update(0);
     }
-    
-    
     
     /**
      * Reccord new attempt
