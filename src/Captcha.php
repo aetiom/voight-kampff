@@ -163,8 +163,8 @@ class Captcha {
      */
     private function checkAnswers($userAnswers, $expectedAnswers)
     {
-        // return false if user check more answers than exepcted
-        if (count($userAnswers) > $this->options['requestCount']) {
+        // return false if user does not send count of expected answers
+        if (count($userAnswers) !== $this->options['requestCount']) {
             return false;
         }
         
