@@ -58,7 +58,7 @@ abstract class Abstr {
                 'background' => 'whitesmoke',
                 'selection'  => 'cornflowerblue',
                 'error'      => 'orangered'
-            )), $options['frontend']);
+            )), $options);
         
         
         $this->cbPrefix = $options['cbPrefix'];        
@@ -116,23 +116,23 @@ abstract class Abstr {
         $html_code = '';
         
         if ($cssEnable === true) {
-            $html_code .= '<style type="text/css">'.$this->create_css_code().'</style>';
+            $html_code .= '<style type="text/css">'.$this->createCss().'</style>';
         }
         
         if (isset($content['error']) && !empty($content['error'])) {
-            $html_code .='<div class="sc-form has-error"><p class="sc-error">'.nl2br($content['error']).'</p>';
+            $html_code .='<div class="vk-form has-error"><p class="vk-error">'.nl2br($content['error']).'</p>';
         } else {
-            $html_code .= '<div class="sc-form">';
+            $html_code .= '<div class="vk-form">';
         }
         
         if (isset($content['directive']) && !empty($content['directive'])) {
-            $html_code .= '<p class="sc-directive">'.nl2br($content['directive']).'</p>';
+            $html_code .= '<p class="vk-directive">'.nl2br($content['directive']).'</p>';
         }
         
-        $html_code .= $this->create_form_inputs().'</div>';
+        $html_code .= $this->createFormInputs().'</div>';
         
         if ($jsEnable === true) {
-            $html_code .= '<script type="text/javascript">'.$this->create_js_code().'</script>';
+            $html_code .= '<script type="text/javascript">'.$this->createJs().'</script>';
         }
         
         return $html_code;
@@ -144,7 +144,7 @@ abstract class Abstr {
      * Create form inputs for HTML
      * @return string form inputs HTML code
      */
-    protected function create_form_inputs() 
+    protected function createFormInputs() 
     {
         $inputs = '';
         
@@ -153,7 +153,7 @@ abstract class Abstr {
             
             // initiate select content with default value if its not initiated yet
             if (!isset($select['label']) || empty($select['label'])) {
-                $select['label'] = '<span class="sc-img c'.$select['key'].'"></span>';
+                $select['label'] = '<span class="vk-img vk'.$select['key'].'"></span>';
             }
             
             $inputs .= '<input class="" type="checkbox" id="'.$this->cbPrefix.$count

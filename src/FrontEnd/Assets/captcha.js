@@ -1,4 +1,4 @@
-var captchaImages = document.querySelectorAll('.sc-img');
+var captchaImages = document.querySelectorAll('.vk-img');
 
 var _loop = function _loop(i) {
     captchaImages[i].addEventListener('click', function () {

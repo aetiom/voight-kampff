@@ -23,7 +23,7 @@
 	"require":
 	{
 		"php": "^7.0.0",
-    "aetiom/php-extended": "dev-dev"
+                "aetiom/php-extended": "dev-dev"
 	},
 	"minimum-stability": "stable",
 	"autoload":

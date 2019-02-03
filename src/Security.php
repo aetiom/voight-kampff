@@ -3,7 +3,7 @@
 namespace VoightKampff;
 
 /**
- * Captcha security
+ * VoightKampff captcha security
  *
  * @author Aetiom <aetiom@protonmail.com>
  * @package VoightKampff
@@ -12,9 +12,9 @@ namespace VoightKampff;
 class Security {
     
     /**
-     * @var array $opts : config options
+     * @var array $options : config options
      */
-    protected $opts;
+    protected $options;
     
     /**
      * @var \aetiom\PhpExt\Session $session : captcha session
@@ -25,7 +25,7 @@ class Security {
      * Get timeout status
      * @return boolean ! true if user get timeouted, false otherwise
      */
-    public function get_timeout_status()
+    public function getTimeoutStatus()
     {
         $timeout = $this->session->fetch('timeout');
         
@@ -40,9 +40,9 @@ class Security {
      * Get timeout remaining time
      * @return integer : remaining time
      */
-    public function get_timeout_remaining()
+    public function getTimeoutRemaining()
     {
-        if ($this->get_timeout_status()) {
+        if ($this->getTimeoutStatus()) {
             return $this->session->fetch('timeout') - time();
         }
         
@@ -53,12 +53,12 @@ class Security {
      * Get session activity status
      * @return boolean : true if session is active, false otherwise
      */
-    public function is_session_active()
+    public function isSessionActive()
     {
         $lastAttempt = $this->session->fetch('lastAttempt');
         
         if ($lastAttempt !== 0 && $lastAttempt 
-                + $this->opt['inactivTime'] < time()) {
+                + $this->options['inactivTime'] < time()) {
             return false;
         }
         
@@ -73,7 +73,7 @@ class Security {
      */
     public function __construct(Array $options)
     {
-        $this->opts = $options;
+        $this->options = $options;
         
         $this->session = new \aetiom\PhpExt\Session('voight-kampff');
         $this->session->insert(
@@ -97,9 +97,9 @@ class Security {
      * Reccord new attempt
      * @return boolean true if session is still active, false otherwise
      */
-    public function add_attempt()
+    public function addAttempt()
     {   
-        if ($this->is_session_active()) {
+        if ($this->isSessionActive()) {
             $this->session->select('attempts')->add(1);
             $session_is_active = true;
             
@@ -108,9 +108,9 @@ class Security {
             $session_is_active = false;
         }
 
-        if ($this->session->fetch('attempts') >= $this->opts['maxAttempts']) {
+        if ($this->session->fetch('attempts') >= $this->options['maxAttempts']) {
             $this->session->select('timeout')
-                    ->update(time() + intval($this->opts['timeoutTime']));
+                    ->update(time() + intval($this->options['timeoutTime']));
             $this->session->select('attempts')->update(0);
         }
         

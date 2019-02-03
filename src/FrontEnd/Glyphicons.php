@@ -12,16 +12,15 @@ namespace VoightKampff\FrontEnd;
 class Glyphicons  extends Abstr {
     
     /**
-     * Constructor
-     * 
-     * @param array  $collection : symbols collection
-     * @param string $options    : options containing 'cb_prefix' and 'colors' keys
+     * Set symbols collection
+     * @param array $collection : symbols collection
      */
-    public function __construct($collection, $options) {
-        parent::__construct($collection, $options);
+    public function setCollection($collection)
+    {
+        parent::setCollection($collection);
         
         foreach ($this->collection as $key => $select) {
-            $this->collection[$key]['label'] = '<span class="sc-img glyphicon sc'.$select['key'].'"></span>';
+            $this->collection[$key]['label'] = '<span class="vk-img glyphicon vk'.$select['key'].'"></span>';
         }
     }
     
@@ -29,16 +28,16 @@ class Glyphicons  extends Abstr {
      * Create CSS code
      * @return string CSS code
      */
-    public function create_css_code()
+    public function createCss()
     {
         $prefix = '';
         if ($this->debug === true) {
             $prefix = "\n\n";
         }
         
-        $css = parent::create_css_code();
+        $css = parent::createCss();
         foreach ($this->collection as $col) {
-            $css .= $prefix.'.sc'.$col['key'].':before {content:"'.$col['idStr'].'";}';
+            $css .= $prefix.'.vk'.$col['key'].':before {content:"'.$col['idStr'].'";}';
         }
         
         return $css;

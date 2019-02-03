@@ -3,7 +3,7 @@
 namespace VoightKampff;
 
 /**
- * VoightKampff captcha manager
+ * VoightKampff captcha
  *
  * @author Aetiom <aetiom@protonmail.com>
  * @package VoightKampff
@@ -44,16 +44,22 @@ class Captcha {
     
     
     /**
+     * Get captcha identifier
+     * @return string : captcha identifier
+     */
+    public function getId()
+    {
+        return $this->collection->getId();
+    }
+    
+    
+    /**
      * Get collection of images to display
      * @return array : image collection
      */
     public function getImages()
     {
-        if ($this->collection !== null) {
-            return $this->collection->getImages();
-        }
-        
-        return array();
+        return $this->collection->getImages();
     }
     
     /**
@@ -65,10 +71,6 @@ class Captcha {
      */
     public function getDirective($lang = '')
     {
-        if ($this->collection == null) {
-            return '';
-        }
-        
         return $this->formatDirective($lang);
     }
     
@@ -89,16 +91,24 @@ class Captcha {
      * @param string $id    : captcha identifier
      * @param array  $param : optional parameters
      */
-    public function __construct($id, $param = array()) 
+    public function __construct($id, $param) 
     {
-        $this->initiate($param);
+        $this->options = $param;
+        
+        $this->directiveCol = new \aetiom\PhpExt\MultiLang\Collection(
+                $this->options['directiveCollection'], 
+                $this->options['defaultLang']);
+        
+        $this->errorCol = new \aetiom\PhpExt\MultiLang\Collection(
+                $this->options['errorCollection'], 
+                $this->options['defaultLang']);
         
         $this->collection = new Collection($id, $this->options);
         $this->security = new Security($this->options['security']);
         
-        if ($this->security->get_timeout_status()) {
+        if ($this->security->getTimeoutStatus()) {
             $this->error = $this->errorCol->createContainer('timeout', 
-                array('%TIME%' => $this->security->get_timeout_remaining()));
+                array('%TIME%' => $this->security->getTimeoutRemaining()));
 
             $this->collection->clear();
         }
@@ -116,6 +126,12 @@ class Captcha {
     {
         $answerList = $this->collection->getAnswers();
         
+        if (!$this->security->isSessionActive()) {
+            $this->error = $this->errorCol->createContainer('inactive');
+            $this->collection->clear();
+            return false;
+        }
+        
         if (empty($userAnswers)) {
             $this->error = $this->errorCol->createContainer('emptyAnswers');
             return false;
@@ -127,7 +143,7 @@ class Captcha {
             return true;
         }
         
-        if (!$this->security->add_attempt()) {
+        if (!$this->security->addAttempt()) {
             $this->collection->clear();
         }
         
@@ -136,23 +152,6 @@ class Captcha {
     }
     
     
-    
-    /**
-     * Initiate options and collections
-     * @param array $param : optional parameters
-     */
-    private function initiate($param)
-    {
-        $this->options = VoightKampff::mergeWithDefaultOptions($param);
-        
-        $this->directiveCol = new \aetiom\PhpExt\MultiLang\Collection(
-                $this->options['directiveCollection'], 
-                $this->options['defaultLang']);
-        
-        $this->errorCol = new \aetiom\PhpExt\MultiLang\Collection(
-                $this->options['errorCollection'], 
-                $this->options['defaultLang']);
-    }
     
     /**
      * Check user answers
@@ -164,8 +163,8 @@ class Captcha {
      */
     private function checkAnswers($userAnswers, $expectedAnswers)
     {
-        // return false if user check more answers than exepcted
-        if (count($userAnswers) > $this->options['requestCount']) {
+        // return false if user does not send count of expected answers
+        if (count($userAnswers) !== $this->options['requestCount']) {
             return false;
         }
         
@@ -213,7 +212,7 @@ class Captcha {
             }
 
             
-            $dirStr .= $kwIn->getMessage($lang).$q->getMessage($lang).$kwOut->getMessage($lang);
+            $dirStr .= $kwIn->getMessage($lang).$q[$lang].$kwOut->getMessage($lang);
             
         }
 

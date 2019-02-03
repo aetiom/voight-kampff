@@ -3,7 +3,7 @@
 namespace VoightKampff;
 
 /**
- * Captcha collection
+ * VoightKampff captcha collection
  *
  * @author Aetiom <aetiom@protonmail.com>
  * @package VoightKampff
@@ -37,6 +37,15 @@ class Collection {
     protected $session = null;
     
     
+    
+    /**
+     * Get collection identifier
+     * @return string : collection identifier
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
     
     /**
      * Get captcha images
