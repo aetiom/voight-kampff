@@ -44,13 +44,30 @@ class Captcha {
     
     
     /**
-     * Get captcha identifier
-     * @return string : captcha identifier
+     * Get posted images from HTML form
+     * 
+     * @param integer $count  : number of images to obtain
+     * @param string  $prefix : checkbox prefix (id + cbPrefix)
+     * 
+     * @return array : posted images identifiers
      */
-    public function getId()
+    static public function obtainPostedImages($count, $prefix)
     {
-        return $this->collection->getId();
+        $postedImages = array();
+
+        for ($i = 0; $i < $count; $i++) {
+            $key = $prefix.$i;
+            
+            if (!isset($_POST[$key])) {
+                continue;
+            }
+            
+            $postedImages[] = filter_var($_POST[$key], FILTER_VALIDATE_INT);
+        }
+
+        return $postedImages;
     }
+    
     
     
     /**
@@ -127,9 +144,13 @@ class Captcha {
      * @param array $userAnswers : user answers to check and certifiates 
      * @return boolean true in case of success, false otherwise
      */
-    public function verify($userAnswers) 
+    public function verify(array $userAnswers = null) 
     {
         $answerList = $this->collection->getAnswers();
+        if ($userAnswers === null) {
+            $userAnswers = self::obtainPostedImages(
+                $this->options->imageCount, $this->options->cbPrefix);
+        }
         
         if (!$this->security->isSessionActive()) {
             $this->error = $this->errorCol->createContainer('inactive');
@@ -154,6 +175,29 @@ class Captcha {
         
         $this->error = $this->errorCol->createContainer('wrongAnswers');
         return false;
+    }
+    
+    /**
+     * Display captcha
+     * 
+     * @param string $lang : display language
+     * @return string : html code
+     * 
+     * @throws \Exception if captcha id does not exist
+     */
+    public function display($lang = null)
+    {
+        if (!$this->checkTimeout()) {
+            $this->checkInactivity(true);
+        }
+        
+        $error = '';
+        if ($this->error !== null) {
+            $error = $this->error->getMessage($lang);
+        }
+        
+        $display = new Display($this->options, $this->getImages());
+        return $display->createHtml($this->getDirective($lang), $error);
     }
     
     
