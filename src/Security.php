@@ -43,7 +43,7 @@ class Security {
      */
     public function getTimeoutRemaining()
     {
-        if ($this->getTimeoutStatus()) {
+        if ($this->session->fetch('timeout') !== 0) {
             return $this->session->fetch('timeout') - time();
         }
         
@@ -66,6 +66,18 @@ class Security {
         return true;
     }
     
+    
+    
+    public function resetInactivity()
+    {
+        $this->session->select('lastAttempt')->update(0);
+    }
+    
+    
+    public function resetTimout()
+    {
+        $this->session->select('timeout')->update(0);
+    }
     
     
     /**

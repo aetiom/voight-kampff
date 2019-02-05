@@ -89,19 +89,34 @@ class Collection {
     public function __construct(string $id, Options $options)
     {
         $this->id = $id;
-        $this->session = new \aetiom\PhpExt\Session('styx-captcha');
         $this->options = $options;
         
+        $this->session = new \aetiom\PhpExt\Session('voight-kampff');
+        $currentCol = $this->session->select($this->id)->fetch();
         
-        $this->setCollection($param);
+        if (!empty($currentCol)) {
+            $this->images   = $currentCol['images'];
+            $this->keyWords = $currentCol['keyWords'];
+            $this->answers  = $currentCol['answers'];
+        } else {
+            $this->setNewCollection();
+        }
         
         shuffle($this->images);
         shuffle($this->keyWords);
         
-        $this->session->select($this->id)
-                ->update(array ('images'   => $this->images, 
-                                'keyWords' => $this->keyWords, 
-                                'answers'  => $this->answers));
+        $this->updateSession();
+    }
+    
+    
+    
+    /**
+     * Reset collection by creating a new one
+     */
+    public function reset()
+    {
+        $this->setNewCollection();
+        $this->updateSession();
     }
     
     
@@ -111,7 +126,29 @@ class Collection {
      */
     public function clear()
     {   
+        $this->images = array();
+        $this->answers = array();
+        $this->keyWords = array();
+        
+        $this->updateSession();
+    }
+    
+    
+    public function delete()
+    {
+        $this->images = array();
+        $this->answers = array();
+        $this->keyWords = array();
+        
         $this->session->delete($this->id);
+    }
+    
+    private function updateSession()
+    {
+        $this->session->select($this->id)
+                ->update(array ('images'   => $this->images, 
+                                'keyWords' => $this->keyWords, 
+                                'answers'  => $this->answers));
     }
     
     
@@ -193,25 +230,16 @@ class Collection {
      * @param array $param : collection parameters containing 'imageCount', 
      * 'defaultLang' and 'requestCount' keys
      */
-    private function setCollection($param)
+    private function setNewCollection()
     {
-        $currentCol = $this->session->select($this->id)->fetch();
-        if (!empty($currentCol)) {
-            $this->images   = $currentCol['images'];
-            $this->keyWords = $currentCol['keyWords'];
-            $this->answers  = $currentCol['answers'];
-        }
-        
-        else {
-            $initPool = $this->initiatePool($param['pool']);
-            
-            $this->selectImages($initPool, $param['imageCount']);
-            $this->selectKeyWords($param['defaultLang'], $param['requestCount']);
-            
-            // remove 'lang' data from images selection for security reasons
-            for ($i=0; $i<$param['imageCount']; $i++) {
-                unset($this->images[$i]['lang']);
-            }
+        $this->initiatePool();
+
+        $this->selectImages();
+        $this->selectKeyWords();
+
+        // remove 'lang' data from images selection for security reasons
+        for ($i=0; $i<$this->options->imageCount; $i++) {
+            unset($this->images[$i]['lang']);
         }
     }
     
