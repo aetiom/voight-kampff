@@ -1,43 +1,45 @@
 <?php
 
+namespace VoightKampff;
+
 /**
- * VoightKampff default options
- * 
+ * VoightKampff options
+ *
  * @author Aetiom <aetiom@protonmail.com>
  * @package VoightKampff
  * @version 1.0
  */
-
-return [
+class Options {
+    
     /**
      * @var string defaultLang : default language used for keywords, directives and errors
      */
-    'defaultLang' => 'en',
+    public $defaultLang = 'en';
     
     /**
      * @var string debug : debug mode
      */
-    'debug' => false,
+    public $debug = false;
     
     /**
      * @var integer imageCount : images to use and display
      */
-    'imageCount' => 7,
+    public $imageCount = 7;
 
     /**
      * @var integer requestCount : requests to ask from user
      */
-    'requestCount' => 2,
+    public $requestCount = 2;
 
     /**
      * @var string cbPrefix : prefix used for/by checkbox elements (for id, name and label)
      */
-    'cbPrefix' => 'vk-cb',
+    public $cbPrefix = 'vk-cb';
     
     /**
      * @var security : security configuration (user max attemps and timeout system)
      */
-    'security' => [
+    public $security = [
         /**
          * @var integer maxAttempts : maximum attempts before getting timeout
          */
@@ -52,12 +54,12 @@ return [
          * @var integer inactivTime : seconds of inactivy before reseting timeout system
          */
         'inactivTime' => 600,
-    ],
+    ];
     
     /**
      * @var array frontend : frontend configuration for HTML, CSS and JS generating
      */
-    'frontend' =>  [
+    public $frontend = [
         
         /**
          * @var string class : frontend library class used for generating captcha
@@ -95,7 +97,7 @@ return [
              */
             'error'      => 'orangered'
         ]
-    ],
+    ];
     
     /**
      * @var array directiveCollection : directive language collection
@@ -103,7 +105,7 @@ return [
      * each entry can contain an array containing each supported languages key
      * if only a string is given, then it will be used for each languages
      */
-    'directiveCollection' => [
+    public $directiveCollection = [
         
         /**
          * @var string|array start : begining of the question
@@ -142,13 +144,13 @@ return [
          * @var string|array keywordOut : ending of each keyword integration
          */
         'keywordOut' => '</strong>',
-    ],
+    ];
     
     
     /**
     * @var array custom_errors : costumizing captcha errors for user
     */
-    'errorCollection' => [
+    public $errorCollection = [
         /**
          * @var array answer_empty : error message for empty captcha answers
          */
@@ -180,5 +182,80 @@ return [
             'en' => 'You were too long to answer, please try again.',
             'fr' => 'Vous avez été trop long à répondre, veuillez réessayer.'
         ]
-    ]
-];
+    ];
+    
+    /**
+     * @var array pool : images pool, containing 'idStr' for image id in string, 
+     * 'lang' keys for human language meanings in string and 'styleClass' for 
+     * frontend special class in string
+     */
+    public $pool = [
+        ['idStr' => '\f6b0', 
+            'lang'  => ['en' => 'unicorn', 'fr' => 'licorne']],
+        ['idStr' => '\f6b4', 
+            'lang'  => ['en' => 'badger',  'fr' => 'blaireau']],
+        ['idStr' => '\f6b5', 
+            'lang'  => ['en' => 'bat',     'fr' => 'chauve-souris']],
+        ['idStr' => '\f6be', 
+            'lang'  => ['en' => 'cat',     'fr' => 'chat']],
+        ['idStr' => '\f6c8', 
+            'lang'  => ['en' => 'cow',     'fr' => 'vache']],
+        ['idStr' => '\f520', 
+            'lang'  => ['en' => 'bird',    'fr' => 'oiseau']],
+        ['idStr' => '\f78e', 
+            'lang'  => ['en' => 'deer',    'fr' => 'cerf']],
+        ['idStr' => '\f6d3', 
+            'lang'  => ['en' => 'dog',     'fr' => 'chien']],
+        ['idStr' => '\f6d5', 
+            'lang'  => ['en' => 'dragon',  'fr' => 'dragon']],
+        ['idStr' => '\f6d8', 
+            'lang'  => ['en' => 'duck',    'fr' => 'canard']],
+        ['idStr' => '\f6da', 
+            'lang'  => ['en' => 'elephant','fr' => 'éléphant']],
+        ['idStr' => '\f578', 
+            'lang'  => ['en' => 'fish',    'fr' => 'poisson']],
+        ['idStr' => '\f52e', 
+            'lang'  => ['en' => 'frog',    'fr' => 'grenouille']],
+        ['idStr' => '\f6ed', 
+            'lang'  => ['en' => 'hippo',   'fr' => 'hippopotame']],
+        ['idStr' => '\f6f0', 
+            'lang'  => ['en' => 'horse',   'fr' => 'cheval']],
+        ['idStr' => '\f6fb', 
+            'lang'  => ['en' => 'monkey',  'fr' => 'singe']],
+        ['idStr' => '\f706', 
+            'lang'  => ['en' => 'pig',     'fr' => 'cochon']],
+        ['idStr' => '\f708', 
+            'lang'  => ['en' => 'rabbit',  'fr' => 'lapin']],
+        ['idStr' => '\f711', 
+            'lang'  => ['en' => 'sheep',   'fr' => 'mouton']],
+        ['idStr' => '\f716', 
+            'lang'  => ['en' => 'snake',   'fr' => 'serpent']],
+        ['idStr' => '\f717', 
+            'lang'  => ['en' => 'spider',  'fr' => 'araignée']],
+        ['idStr' => '\f71a', 
+            'lang'  => ['en' => 'squirrel','fr' => 'écureuil']],
+        ['idStr' => '\f726', 
+            'lang'  => ['en' => 'turtle',  'fr' => 'tortue']],
+        ['idStr' => '\f72c', 
+            'lang'  => ['en' => 'whale',   'fr' => 'baleine']]
+    ];
+    
+    
+    
+    /**
+     * Constructor
+     * @param array $param : optional parameters
+     */
+    public function __construct($param = []) 
+    {
+        if (empty($param)) {
+            return;
+        }
+        
+        foreach ($param as $name => $value) {
+            if (isset($this->$name)) {
+                $this->$name = $value;
+            }
+        }
+    }
+}

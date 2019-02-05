@@ -12,24 +12,14 @@ namespace VoightKampff\FrontEnd;
 abstract class Abstr {
     
     /**
-     * @var array $options : frontend options in array
+     * @var Options $options : captcha options
      */
     protected $options;
-    
-    /**
-     * @var boolean $debug : debug status
-     */
-    protected $debug;
     
     /**
      * @var array $collection : symbols collection
      */
     protected $collection;
-    
-    /**
-     * @var string $cbPrefix : checkbox prefix
-     */
-    protected $cbPrefix;
     
     
     
@@ -48,20 +38,9 @@ abstract class Abstr {
      * Constructor
      * @param string $options    : options containing 'cbPrefix' and 'colors' keys
      */
-    public function __construct($options) {
-        
-        $this->debug = isset($options['debug']) ? $options['debug'] : false;
-        
-        $this->options = array_merge(array(
-            'options' => array(),
-            'colors'  => array(
-                'background' => 'whitesmoke',
-                'selection'  => 'cornflowerblue',
-                'error'      => 'orangered'
-            )), $options);
-        
-        
-        $this->cbPrefix = $options['cbPrefix'];        
+    public function __construct($options) 
+    {    
+        $this->options = $options;
         $this->collection = array();
     }
     
@@ -73,13 +52,13 @@ abstract class Abstr {
      */
     public function createCss()
     {
-        if ($this->debug === true) {
+        if ($this->options->debug === true) {
             $css = file_get_contents(__DIR__.'/Assets/captcha.css');
         } else {
             $css = file_get_contents(__DIR__.'/Assets/captcha.min.css');
         }
         
-        $colors = $this->options['colors'];
+        $colors = $this->options->frontend['colors'];
         
         $css = str_replace('%BG_COLOR%', $colors['background'], $css);
         $css = str_replace('%ERR_COLOR%', $colors['error'], $css);
@@ -96,7 +75,7 @@ abstract class Abstr {
      */
     public function createJs()
     {
-        if ($this->debug === true) {
+        if ($this->options->debug === true) {
             return file_get_contents(__DIR__.'/Assets/captcha.js');
         }
         
@@ -156,9 +135,9 @@ abstract class Abstr {
                 $select['label'] = '<span class="vk-img vk'.$select['key'].'"></span>';
             }
             
-            $inputs .= '<input class="" type="checkbox" id="'.$this->cbPrefix.$count
-                    .'" name="'.$this->cbPrefix.$count.'" value="'.$select['key'].'">'
-                    .'<label for="'.$this->cbPrefix.$count.'">'.$select['label'].'</label>';
+            $inputs .= '<input class="" type="checkbox" id="'.$this->options->cbPrefix.$count
+                    .'" name="'.$this->options->cbPrefix.$count.'" value="'.$select['key'].'">'
+                    .'<label for="'.$this->options->cbPrefix.$count.'">'.$select['label'].'</label>';
             $count++;
         }
         

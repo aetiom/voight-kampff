@@ -12,7 +12,7 @@ namespace VoightKampff;
 class Captcha {
     
     /**
-     * @var Array $options : captcha options
+     * @var \VoightKampff\Opions $options : config options
      */
     protected $options;
     
@@ -83,6 +83,15 @@ class Captcha {
         return $this->error;
     }
     
+    /**
+     * Get options
+     * @return \VoightKampff\Options : captcha options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+    
     
     
     /**
@@ -91,20 +100,16 @@ class Captcha {
      * @param string $id    : captcha identifier
      * @param array  $param : optional parameters
      */
-    public function __construct($id, $param) 
+    public function __construct($id, $param = array()) 
     {
-        $this->options = $param;
-        
-        $this->directiveCol = new \aetiom\PhpExt\MultiLang\Collection(
-                $this->options['directiveCollection'], 
-                $this->options['defaultLang']);
+        $this->options = new Options($param);
         
         $this->errorCol = new \aetiom\PhpExt\MultiLang\Collection(
-                $this->options['errorCollection'], 
-                $this->options['defaultLang']);
+                $this->options->errorCollection, 
+                $this->options->defaultLang);
         
         $this->collection = new Collection($id, $this->options);
-        $this->security = new Security($this->options['security']);
+        $this->security = new Security($this->options);
         
         if ($this->security->getTimeoutStatus()) {
             $this->error = $this->errorCol->createContainer('timeout', 
@@ -164,7 +169,7 @@ class Captcha {
     private function checkAnswers($userAnswers, $expectedAnswers)
     {
         // return false if user does not send count of expected answers
-        if (count($userAnswers) !== $this->options['requestCount']) {
+        if (count($userAnswers) !== $this->options->requestCount) {
             return false;
         }
         
@@ -178,7 +183,7 @@ class Captcha {
             }
         }
 
-        if ($count === $this->options['requestCount']) {
+        if ($count === $this->options->requestCount) {
             return true;
         }
         

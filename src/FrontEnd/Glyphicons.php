@@ -31,7 +31,7 @@ class Glyphicons  extends Abstr {
     public function createCss()
     {
         $prefix = '';
-        if ($this->debug === true) {
+        if ($this->options->debug === true) {
             $prefix = "\n\n";
         }
         
