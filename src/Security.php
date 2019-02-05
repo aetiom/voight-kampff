@@ -12,7 +12,7 @@ namespace VoightKampff;
 class Security {
     
     /**
-     * @var array $options : config options
+     * @var \VoightKampff\Opions $options : config options
      */
     protected $options;
     
@@ -25,6 +25,7 @@ class Security {
      * Get timeout status
      * @return boolean ! true if user get timeouted, false otherwise
      */
+    
     public function getTimeoutStatus()
     {
         $timeout = $this->session->fetch('timeout');
@@ -42,7 +43,7 @@ class Security {
      */
     public function getTimeoutRemaining()
     {
-        if ($this->getTimeoutStatus()) {
+        if ($this->session->fetch('timeout') !== 0) {
             return $this->session->fetch('timeout') - time();
         }
         
@@ -58,7 +59,7 @@ class Security {
         $lastAttempt = $this->session->fetch('lastAttempt');
         
         if ($lastAttempt !== 0 && $lastAttempt 
-                + $this->options['inactivTime'] < time()) {
+                + $this->options->security['inactivTime'] < time()) {
             return false;
         }
         
@@ -67,11 +68,23 @@ class Security {
     
     
     
+    public function resetInactivity()
+    {
+        $this->session->select('lastAttempt')->update(0);
+    }
+    
+    
+    public function resetTimout()
+    {
+        $this->session->select('timeout')->update(0);
+    }
+    
+    
     /**
      * Constructor
-     * @param Array $options : security options
+     * @param \VoightKampff\Options $options : options
      */
-    public function __construct(Array $options)
+    public function __construct(Options $options)
     {
         $this->options = $options;
         
@@ -82,16 +95,20 @@ class Security {
     }
     
     
+    
     /**
-     * Reset session security data and unset actual collection
+     * Reset session security data
+     * @param string $param : security parameter to clear
      */
-    public function clear()
+    public function clear($param = null)
     {
-        $this->session->update(
+        if ($param === null) {
+            $this->session->update(
                 array('attempts' => 0, 'lastAttempt' => 0, 'timeout' => 0));
+        }
+        
+        $this->session->select($param)->update(0);
     }
-    
-    
     
     /**
      * Reccord new attempt
@@ -108,9 +125,9 @@ class Security {
             $session_is_active = false;
         }
 
-        if ($this->session->fetch('attempts') >= $this->options['maxAttempts']) {
+        if ($this->session->fetch('attempts') >= $this->options->security['maxAttempts']) {
             $this->session->select('timeout')
-                    ->update(time() + intval($this->options['timeoutTime']));
+                    ->update(time() + intval($this->options->security['timeoutTime']));
             $this->session->select('attempts')->update(0);
         }
         

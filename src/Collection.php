@@ -17,6 +17,11 @@ class Collection {
     protected $id = '';
     
     /**
+     * @var \VoightKampff\Opions $options : config options
+     */
+    protected $options;
+    
+    /**
      * @var array $images : list of captcha images
      */
     protected $images = array();
@@ -75,27 +80,43 @@ class Collection {
     }
     
     
-    
     /**
      * Constructor
      * 
-     * @param array $id    : collection id
-     * @param array $param : captcha main parameters
+     * @param string $id                     : collection id
+     * @param \VoightKampff\Options $options : $options
      */
-    public function __construct($id, $param)
+    public function __construct(string $id, Options $options)
     {
         $this->id = $id;
-        $this->session = new \aetiom\PhpExt\Session('styx-captcha');
+        $this->options = $options;
         
-        $this->setCollection($param);
+        $this->session = new \aetiom\PhpExt\Session('voight-kampff');
+        $currentCol = $this->session->select($this->id)->fetch();
+        
+        if (!empty($currentCol)) {
+            $this->images   = $currentCol['images'];
+            $this->keyWords = $currentCol['keyWords'];
+            $this->answers  = $currentCol['answers'];
+        } else {
+            $this->setNewCollection();
+        }
         
         shuffle($this->images);
         shuffle($this->keyWords);
         
-        $this->session->select($this->id)
-                ->update(array ('images'   => $this->images, 
-                                'keyWords' => $this->keyWords, 
-                                'answers'  => $this->answers));
+        $this->updateSession();
+    }
+    
+    
+    
+    /**
+     * Reset collection by creating a new one
+     */
+    public function reset()
+    {
+        $this->setNewCollection();
+        $this->updateSession();
     }
     
     
@@ -105,7 +126,29 @@ class Collection {
      */
     public function clear()
     {   
+        $this->images = array();
+        $this->answers = array();
+        $this->keyWords = array();
+        
+        $this->updateSession();
+    }
+    
+    
+    public function delete()
+    {
+        $this->images = array();
+        $this->answers = array();
+        $this->keyWords = array();
+        
         $this->session->delete($this->id);
+    }
+    
+    private function updateSession()
+    {
+        $this->session->select($this->id)
+                ->update(array ('images'   => $this->images, 
+                                'keyWords' => $this->keyWords, 
+                                'answers'  => $this->answers));
     }
     
     
@@ -116,17 +159,17 @@ class Collection {
      * @var array   $pool  : captcha pool
      * @var integer $count : number of images to select
      */
-    protected function selectImages($pool, $count){
+    protected function selectImages(){
         
         $img = 0;
-        while ($img < $count) {
+        while ($img < $this->options->imageCount) {
             $randKey = mt_rand(0, 19);
 
-            if (array_key_exists($randKey, $pool) 
+            if (array_key_exists($randKey, $this->options->pool) 
                     && !array_key_exists($randKey, $this->images)) {
-                $this->images[$img] = $pool[$randKey];
+                $this->images[$img] = $this->options->pool[$randKey];
                 $this->images[$img]['class'] = '.c'.$this->images[$img]['key'];
-                unset($pool[$randKey]);
+                unset($this->options->pool[$randKey]);
 
                 $img++;
             }
@@ -141,7 +184,7 @@ class Collection {
      * @var string  $defaultLang : default language
      * @var integer $count        : number of key words to select
      */
-    protected function selectKeyWords($defaultLang, $count) {
+    protected function selectKeyWords() {
         
         if (empty($this->images)) {
             throw new \Exception('image collection is empty,'.
@@ -151,7 +194,7 @@ class Collection {
         $imageCount = count($this->images);
         $quest = 0;
         
-        while ($quest < $count) {
+        while ($quest < $this->options->requestCount) {
             $rand = mt_rand(0, $imageCount - 1);
 
             $sK = array_search($this->images[$rand]['lang'], $this->keyWords);
@@ -161,9 +204,9 @@ class Collection {
                 continue;
             }
             
-            if (!isset($this->images[$rand]['lang'][$defaultLang]) 
-                    || empty($this->images[$rand]['lang'][$defaultLang])) {
-                throw new \Exception('default language ['.$defaultLang.
+            if (!isset($this->images[$rand]['lang'][$this->options->defaultLang]) 
+                    || empty($this->images[$rand]['lang'][$this->options->defaultLang])) {
+                throw new \Exception('default language ['.$this->options->defaultLang.
                         '] is not set for pool entry '.$rand.
                         ' ('.$this->images['idStr'].')');
             }
@@ -187,25 +230,16 @@ class Collection {
      * @param array $param : collection parameters containing 'imageCount', 
      * 'defaultLang' and 'requestCount' keys
      */
-    private function setCollection($param)
+    private function setNewCollection()
     {
-        $currentCol = $this->session->select($this->id)->fetch();
-        if (!empty($currentCol)) {
-            $this->images   = $currentCol['images'];
-            $this->keyWords = $currentCol['keyWords'];
-            $this->answers  = $currentCol['answers'];
-        }
-        
-        else {
-            $initPool = $this->initiatePool($param['pool']);
-            
-            $this->selectImages($initPool, $param['imageCount']);
-            $this->selectKeyWords($param['defaultLang'], $param['requestCount']);
-            
-            // remove 'lang' data from images selection for security reasons
-            for ($i=0; $i<$param['imageCount']; $i++) {
-                unset($this->images[$i]['lang']);
-            }
+        $this->initiatePool();
+
+        $this->selectImages();
+        $this->selectKeyWords();
+
+        // remove 'lang' data from images selection for security reasons
+        for ($i=0; $i<$this->options->imageCount; $i++) {
+            unset($this->images[$i]['lang']);
         }
     }
     
@@ -218,11 +252,11 @@ class Collection {
      * @param array $pool : captcha pool
      * @return array initiated and shuffled pool
      */
-    private function initiatePool($pool)
+    private function initiatePool()
     {
         $all_rand_num = array(0);
         
-        foreach ($pool as $key => $array) {
+        foreach ($this->options->pool as $key => $array) {
             
             $new_rand = 0;
             while (array_search($new_rand, $all_rand_num) !== false) {
@@ -230,10 +264,9 @@ class Collection {
             }
             
             $all_rand_num[] = $new_rand;
-            $pool[$key]['key'] = $new_rand;
+            $this->options->pool[$key]['key'] = $new_rand;
         }
         
-        shuffle($pool);
-        return $pool;
+        shuffle($this->options->pool);
     }
 }

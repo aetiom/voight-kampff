@@ -30,7 +30,7 @@ class Fontawesome extends Abstr {
     {
         parent::setCollection($collection);
         
-        $fa5Opts = $this->options['options'];
+        $fa5Opts = $this->options->frontend['options'];
         
         if (!isset($fa5Opts['fa5Style']) || empty($fa5Opts['fa5Style'])) {
             $fa5Opts['fa5Style'] = 'fas';
@@ -57,7 +57,7 @@ class Fontawesome extends Abstr {
     public function createCss()
     {
         $prefix = '';
-        if ($this->debug === true) {
+        if ($this->options->debug === true) {
             $prefix = "\n\n";
         }
         
