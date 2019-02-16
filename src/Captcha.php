@@ -27,7 +27,7 @@ class Captcha {
     protected $security = null;
     
     /**
-     * @var \Scribe\MultiLang\Collection $errorCol : error collection
+     * @var \Scribe\Location\Collection $errorCol : error collection
      */
     protected $errorCol = null;
     
@@ -37,7 +37,7 @@ class Captcha {
     protected $directive = null;
     
     /**
-     * @var \Scribe\MultiLang\Container $error : error container
+     * @var \Scribe\Location\Container $error : error container
      */
     protected $error = null;
     
@@ -101,7 +101,7 @@ class Captcha {
     
     /**
      * Get error
-     * @return \Scribe\MultiLang\Container : captcha error container
+     * @return \Scribe\Location\Container : captcha error container
      */
     public function getError()
     {
@@ -130,7 +130,7 @@ class Captcha {
         $this->options = new Options($param);
         $this->options->cbPrefix = $id.'-'.$this->options->cbPrefix;
         
-        $this->errorCol = new \Scribe\MultiLang\Collection(
+        $this->errorCol = new \Scribe\Location\Collection(
                 $this->options->errorCollection, 
                 $this->options->defaultLang);
         
