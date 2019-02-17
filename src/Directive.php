@@ -22,32 +22,32 @@ class Directive {
     protected $collection;
     
     /**
-     * @var \aetiom\PhpExt\MultiLang\Container $start : directive starters
+     * @var \Scribe\Location\Container $start : directive starters
      */    
     protected $start;
     
     /**
-     * @var \aetiom\PhpExt\MultiLang\Container $link1 : directive first linkers
+     * @var \Scribe\Location\Container $link1 : directive first linkers
      */    
     protected $link1;
     
     /**
-     * @var \aetiom\PhpExt\MultiLang\Container $link2 : directive second linkers
+     * @var \Scribe\Location\Container $link2 : directive second linkers
      */    
     protected $link2;
     
     /**
-     * @var \aetiom\PhpExt\MultiLang\Container $end : directive finisher
+     * @var \Scribe\Location\Container $end : directive finisher
      */    
     protected $end;
     
     /**
-     * @var \aetiom\PhpExt\MultiLang\Container $kwIn : directive keyword in tag
+     * @var \Scribe\Location\Container $kwIn : directive keyword in tag
      */
     protected $kwIn;
     
     /**
-     * @var \aetiom\PhpExt\MultiLang\Container $kwOut : directive keyword out tag
+     * @var \Scribe\Location\Container $kwOut : directive keyword out tag
      */
     protected $kwOut;
     
@@ -95,7 +95,7 @@ class Directive {
         $this->options = $options;
         $this->collection = $collection;
         
-        $dirCol = new \aetiom\PhpExt\MultiLang\Collection(
+        $dirCol = new \Scribe\Location\Collection(
                 $this->options->directiveCollection, 
                 $this->options->defaultLang);
         

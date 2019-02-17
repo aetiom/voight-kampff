@@ -9,7 +9,7 @@ namespace VoightKampff;
  * @package VoightKampff
  * @version 1.0
  */
-class Options {
+class Options extends \Scribe\Options {
     
     /**
      * @var string defaultLang : default language used for keywords, directives and errors
@@ -239,23 +239,4 @@ class Options {
         ['idStr' => '\f72c', 
             'lang'  => ['en' => 'whale',   'fr' => 'baleine']]
     ];
-    
-    
-    
-    /**
-     * Constructor
-     * @param array $param : optional parameters
-     */
-    public function __construct($param = []) 
-    {
-        if (empty($param)) {
-            return;
-        }
-        
-        foreach ($param as $name => $value) {
-            if (isset($this->$name)) {
-                $this->$name = $value;
-            }
-        }
-    }
 }

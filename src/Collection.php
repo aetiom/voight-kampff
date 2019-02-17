@@ -37,7 +37,7 @@ class Collection {
     protected $keyWords = array();
     
     /**
-     * @var \aetiom\PhpExt\Session $session : captcha session
+     * @var \Scribe\Session $session : captcha session
      */
     protected $session = null;
     
@@ -91,7 +91,7 @@ class Collection {
         $this->id = $id;
         $this->options = $options;
         
-        $this->session = new \aetiom\PhpExt\Session('voight-kampff');
+        $this->session = new \Scribe\Session('voight-kampff');
         $currentCol = $this->session->select($this->id)->fetch();
         
         if (!empty($currentCol)) {
