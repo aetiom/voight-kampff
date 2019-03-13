@@ -99,12 +99,12 @@ class Directive {
                 $this->options->directiveCollection, 
                 $this->options->defaultLang);
         
-        $this->start = $dirCol->createContainer('start');
-        $this->link1 = $dirCol->createContainer('linkSimple');
-        $this->link2 = $dirCol->createContainer('linkMulti');
-        $this->end   = $dirCol->createContainer('end');
-        $this->kwIn  = $dirCol->createContainer('keywordIn');
-        $this->kwOut = $dirCol->createContainer('keywordOut');
+        $this->start = $dirCol->select('start');
+        $this->link1 = $dirCol->select('linkSimple');
+        $this->link2 = $dirCol->select('linkMulti');
+        $this->end   = $dirCol->select('end');
+        $this->kwIn  = $dirCol->select('keywordIn');
+        $this->kwOut = $dirCol->select('keywordOut');
     }
     
     
