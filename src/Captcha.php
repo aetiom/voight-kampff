@@ -160,7 +160,7 @@ class Captcha {
         }
         
         if (empty($userAnswers)) {
-            $this->error = $this->errorCol->createContainer('emptyAnswers');
+            $this->error = $this->errorCol->select('emptyAnswers');
             return false;
         }
         
@@ -172,7 +172,7 @@ class Captcha {
             return true;
         }
         
-        $this->error = $this->errorCol->createContainer('wrongAnswers');
+        $this->error = $this->errorCol->select('wrongAnswers');
         return false;
     }
     
@@ -240,7 +240,7 @@ class Captcha {
     private function checkTimeout()
     {
         if ($this->security->getTimeoutRemaining() > 0) {
-            $this->error = $this->errorCol->createContainer('timeout', 
+            $this->error = $this->errorCol->select('timeout', 
                 array('%TIME%' => $this->security->getTimeoutRemaining()));
 
             $this->collection->clear();
@@ -268,7 +268,7 @@ class Captcha {
         }
         
         if ($throwError) {
-            $this->error = $this->errorCol->createContainer('inactive');
+            $this->error = $this->errorCol->select('inactive');
         }
         
         $this->security->resetInactivity();
