@@ -37,7 +37,7 @@ class Collection {
     protected $keyWords = array();
     
     /**
-     * @var \Scribe\Session $session : captcha session
+     * @var \Aetiom\PhpUtils\Session $session : captcha session
      */
     protected $session = null;
     
@@ -91,7 +91,7 @@ class Collection {
         $this->id = $id;
         $this->options = $options;
         
-        $this->session = new \Scribe\Session('voight-kampff');
+        $this->session = new \Aetiom\PhpUtils\Session('voight-kampff');
         $currentCol = $this->session->select($this->id)->fetch();
         
         if (!empty($currentCol)) {
@@ -106,6 +106,12 @@ class Collection {
         shuffle($this->keyWords);
         
         $this->updateSession();
+
+        
+        /*
+        var_dump($this->options->pool);
+        exit;
+        */
     }
     
     

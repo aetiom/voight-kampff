@@ -17,7 +17,7 @@ class Security {
     protected $options;
     
     /**
-     * @var \Scribe\Session $session : captcha session
+     * @var \Aetiom\PhpUtils\Session $session : captcha session
      */
     protected $session;
     
@@ -88,7 +88,7 @@ class Security {
     {
         $this->options = $options;
         
-        $this->session = new \Scribe\Session('voight-kampff');
+        $this->session = new \Aetiom\PhpUtils\Session('voight-kampff');
         $this->session->insert(
                 array('attempts' => 0, 'lastAttempt' => 0, 'timeout' => 0)
         );

@@ -12,7 +12,7 @@ namespace VoightKampff;
 class Captcha {
     
     /**
-     * @var \VoightKampff\Opions $options : config options
+     * @var \VoightKampff\Options $options : config options
      */
     protected $options;
     
@@ -27,17 +27,17 @@ class Captcha {
     protected $security = null;
     
     /**
-     * @var \Scribe\Location\Collection $errorCol : error collection
-     */
-    protected $errorCol = null;
-    
-    /**
      * @var \VoightKampff\Directive $directive : directive container
      */
     protected $directive = null;
     
     /**
-     * @var \Scribe\Location\Container $error : error container
+     * @var string $errorCode : error code
+     */
+    protected $errorCode = null;
+
+    /**
+     * @var Asset $error : error container
      */
     protected $error = null;
     
@@ -71,7 +71,7 @@ class Captcha {
     
     
     /**
-     * Get collection of images to display
+     * Get collection of images to render
      * @return array : image collection
      */
     public function getImages()
@@ -101,7 +101,16 @@ class Captcha {
     
     /**
      * Get error
-     * @return \Scribe\Location\Container : captcha error container
+     * @return string : captcha error code
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * Get error
+     * @return Asset : captcha error container
      */
     public function getError()
     {
@@ -130,16 +139,26 @@ class Captcha {
         $this->options = new Options($param);
         $this->options->cbPrefix = $id.'-'.$this->options->cbPrefix;
         
-        $this->errorCol = new \Scribe\Location\Collection(
-                $this->options->errorCollection, 
-                $this->options->defaultLang);
-        
         $this->collection = new Collection($id, $this->options);
         $this->security = new Security($this->options);
         
         $this->directive = new Directive($this->options, $this->collection);
     }
     
+
+    protected function setError($code)
+    {
+        $this->errorCode = $code;
+        $asset = $code;
+
+        if (isset($this->options->errors[$code])) {
+            $asset = $this->options->errors[$code];
+        }
+
+        $this->error = new Asset('error');
+        $this->error->update($asset);
+    }
+
     
     
     /**
@@ -160,7 +179,7 @@ class Captcha {
         }
         
         if (empty($userAnswers)) {
-            $this->error = $this->errorCol->select('emptyAnswers');
+            $this->setError('emptyAnswers');
             return false;
         }
         
@@ -172,19 +191,19 @@ class Captcha {
             return true;
         }
         
-        $this->error = $this->errorCol->select('wrongAnswers');
+        $this->setError('wrongAnswers');
         return false;
     }
     
     /**
-     * Display captcha
+     * Render captcha
      * 
-     * @param string $lang : display language
+     * @param string $lang : rendering language
      * @return string : html code
      * 
      * @throws \Exception if captcha id does not exist
      */
-    public function display($lang = null)
+    public function render($lang = null)
     {
         if (!$this->checkTimeout()) {
             $this->checkInactivity(true);
@@ -192,11 +211,14 @@ class Captcha {
         
         $error = '';
         if ($this->error !== null) {
-            $error = $this->error->getMessage($lang);
+            $error = $this->error->fetch($lang);
+
+            $error = str_replace(
+                '%TIMEOUT%', $this->security->getTimeoutRemaining(), $error);
         }
         
-        $display = new Display($this->options, $this->getImages());
-        return $display->createHtml($this->getDirective($lang), $error);
+        $render = new Render($this->options, $this->getImages());
+        return $render->createHtml($this->getDirective($lang), $error);
     }
     
     
@@ -240,10 +262,9 @@ class Captcha {
     private function checkTimeout()
     {
         if ($this->security->getTimeoutRemaining() > 0) {
-            $this->error = $this->errorCol->select('timeout', 
-                array('%TIME%' => $this->security->getTimeoutRemaining()));
-
+            $this->setError('timeout');
             $this->collection->clear();
+
             return true;
         } 
         
@@ -268,7 +289,7 @@ class Captcha {
         }
         
         if ($throwError) {
-            $this->error = $this->errorCol->select('inactive');
+            $this->setError('inactive');
         }
         
         $this->security->resetInactivity();

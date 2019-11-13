@@ -23,7 +23,7 @@
 	"require":
 	{
 		"php": "^7.0.0",
-                "aetiom/scribe": "dev-dev"
+		"aetiom/php-utils": "dev-dev"
 	},
 	"minimum-stability": "stable",
 	"autoload":

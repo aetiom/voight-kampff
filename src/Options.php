@@ -9,7 +9,7 @@ namespace VoightKampff;
  * @package VoightKampff
  * @version 1.0
  */
-class Options extends \Scribe\Options {
+class Options extends \Aetiom\PhpUtils\Options {
     
     /**
      * @var string defaultLang : default language used for keywords, directives and errors
@@ -105,7 +105,7 @@ class Options extends \Scribe\Options {
      * each entry can contain an array containing each supported languages key
      * if only a string is given, then it will be used for each languages
      */
-    public $directiveCollection = [
+    public $directives = [
         
         /**
          * @var string|array start : begining of the question
@@ -150,7 +150,7 @@ class Options extends \Scribe\Options {
     /**
     * @var array custom_errors : costumizing captcha errors for user
     */
-    public $errorCollection = [
+    public $errors = [
         /**
          * @var array answer_empty : error message for empty captcha answers
          */
@@ -171,8 +171,8 @@ class Options extends \Scribe\Options {
          * @var array timeout : error message when user get timeouted
          */
         'timeout' => [
-            'en' => 'Too much wrong answers, please try again in %TIME% second(s).',
-            'fr' => 'Trop de mauvaises réponses, réessayez dans %TIME% seconde(s).'
+            'en' => 'Too much wrong answers, please try again in %TIMEOUT% second(s).',
+            'fr' => 'Trop de mauvaises réponses, réessayez dans %TIMEOUT% seconde(s).'
         ],
         
         /**

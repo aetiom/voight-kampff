@@ -20,34 +20,34 @@ class Directive {
      * @var \VoightKampff\Collection $collection : captcha collection
      */
     protected $collection;
-    
+
     /**
-     * @var \Scribe\Location\Container $start : directive starters
+     * @var Asset $start : directive starters asset
      */    
     protected $start;
     
     /**
-     * @var \Scribe\Location\Container $link1 : directive first linkers
+     * @var Asset $link1 : directive first linkers asset
      */    
     protected $link1;
     
     /**
-     * @var \Scribe\Location\Container $link2 : directive second linkers
+     * @var Asset $link2 : directive second linkers asset
      */    
     protected $link2;
     
     /**
-     * @var \Scribe\Location\Container $end : directive finisher
+     * @var Asset $end : directive finisher asset
      */    
     protected $end;
     
     /**
-     * @var \Scribe\Location\Container $kwIn : directive keyword in tag
+     * @var Asset $kwIn : directive keyword in tag asset
      */
     protected $kwIn;
     
     /**
-     * @var \Scribe\Location\Container $kwOut : directive keyword out tag
+     * @var Asset $kwOut : directive keyword out tag asset
      */
     protected $kwOut;
     
@@ -95,16 +95,12 @@ class Directive {
         $this->options = $options;
         $this->collection = $collection;
         
-        $dirCol = new \Scribe\Location\Collection(
-                $this->options->directiveCollection, 
-                $this->options->defaultLang);
-        
-        $this->start = $dirCol->select('start');
-        $this->link1 = $dirCol->select('linkSimple');
-        $this->link2 = $dirCol->select('linkMulti');
-        $this->end   = $dirCol->select('end');
-        $this->kwIn  = $dirCol->select('keywordIn');
-        $this->kwOut = $dirCol->select('keywordOut');
+        $this->start = new Asset('start', $this->options->directives);
+        $this->link1 = new Asset('linkSimple', $this->options->directives);
+        $this->link2 = new Asset('linkMulti', $this->options->directives);
+        $this->end   = new Asset('end', $this->options->directives);
+        $this->kwIn  = new Asset('keywordIn', $this->options->directives);
+        $this->kwOut = new Asset('keywordOut', $this->options->directives);
     }
     
     
@@ -119,18 +115,28 @@ class Directive {
      */
     private function format($keyWords, $lang)
     {
+        /*
+        var_dump($this->start);
+        var_dump($this->link1);
+        var_dump($this->link2);
+        var_dump($this->end);
+        var_dump($this->kwIn);
+        var_dump($this->kwOut);
+        exit;
+        */
+        
         $dirStr = '';
         foreach ($keyWords as $key => $word) {
             if (!empty($dirStr)) {
                 $dirStr .= $this->selectLink($key, $lang);
             }
 
-            $dirStr .= $this->kwIn->getMessage($lang).$word
-                    .$this->kwOut->getMessage($lang);
+            $dirStr .= $this->kwIn->fetch($lang).$word
+                    .$this->kwOut->fetch($lang);
         }
 
-        return $this->start->getMessage($lang).$dirStr.
-                $this->end->getMessage($lang);
+        return $this->start->fetch($lang).$dirStr.
+                $this->end->fetch($lang);
     }
     
     /**
@@ -145,9 +151,9 @@ class Directive {
     {
         if ($this->options->requestCount > 2 
                 && $count < $this->options->requestCount - 1) {
-            return $this->link2->getMessage($lang);
+            return $this->link2->fetch($lang);
         } else {
-            return $this->link1->getMessage($lang);
+            return $this->link1->fetch($lang);
         }
     }
 }

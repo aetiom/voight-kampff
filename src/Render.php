@@ -9,7 +9,7 @@ namespace VoightKampff;
  * @package VoightKampff
  * @version 1.0
  */
-class Display {
+class Render {
     
     /**
      * @const integer ERR_FRONTEND_CLASS_MISSING :
@@ -40,7 +40,6 @@ class Display {
     {
         $this->options = $options;
         $this->images = $images;
-        
     }
     
     
