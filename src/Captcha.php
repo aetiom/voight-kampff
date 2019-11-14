@@ -144,8 +144,21 @@ class Captcha {
         
         $this->directive = new Directive($this->options, $this->collection);
     }
-    
 
+
+    /**
+     * Reset captcha
+     * by creating a new set of images and clearing wrong attemps and timeouts
+     *
+     * @return void
+     */
+    public function reset()
+    {
+        $this->collection->reset();
+        $this->security->clear();
+    }
+    
+    
     protected function setError($code)
     {
         $this->errorCode = $code;
