@@ -12,12 +12,13 @@ namespace VoightKampff\FrontEnd;
 class Fontawesome extends Abstr {
     
     /**
-     * @var array $styles : fontawesome 5 style (solid, regular, light) 
+     * @var array $styles : fontawesome 5 style (solid, regular, light, duotone) 
      */
     private $styles = array(
         'solid'   => 'fas',
         'regular' => 'far',
-        'light'   => 'fal'
+        'light'   => 'fal',
+        'duotone' => 'fad'
     );
     
     
