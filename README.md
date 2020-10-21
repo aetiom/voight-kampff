@@ -37,11 +37,10 @@ $captcha = new VoightKampff\Captcha('captcha_identifier_in_string', $pool);
 
 ### Verify captcha
 ```php
-for ($i = 0; $i < $param['imageCount']; $i++) {
-    $cbId[] = $param['cbPrefix'].$i;
-}
+$count = $captcha->getOptions()->imageCount;
+$prefix = $captcha->getOptions()->cbPrefix;
 
-$answers = \VoightKampff\Captcha::obtainPostedImages($cbId);
+$answers = \VoightKampff\Captcha::obtainPostedImages($count, $prefix);
 $captcha->verify($answers);
 ```
 
@@ -52,9 +51,9 @@ $directive = $captcha->getDirective($lang);
 $error = '';
 
 if ($captcha->getError() !== null) {
-    $error = $captcha->getError()->getMessage($lang);
+    $error = $captcha->getError()->fetch($lang);
 }
 
-$display = new \VoightKampff\Display($images);
-$htmlCode = $display->getHtmlCode($directive, $error);
+$render = new \VoightKampff\Render($captcha->getOptions(), $images);
+$htmlCode = $render->createHtml($directive, $error);
 ```
